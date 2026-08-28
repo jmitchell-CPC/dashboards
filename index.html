@@ -1,0 +1,1545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AperiBar Lead Performance Report</title>
+</head>
+<body style="margin:0; background:#0a0a0a;">
+
+<!-- ===== AperiBar Lead Performance Dashboard — embeddable widget ===== -->
+<!-- Drop this entire block into a Custom HTML / Code block on your AperiBar site. -->
+<!-- Self-contained: scoped CSS, namespaced IDs, no globals leaked. -->
+<style>
+	@import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Playfair+Display:wght@400;500;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap');
+	.ab-dashboard {
+		--bg: #0a0a0a;
+		--panel: #141414;
+		--panel-2: #1c1c1c;
+		--border: #2a2a2a;
+		--red: #dc1e2e;
+		--red-dim: #a8161f;
+		--red-glow: rgba(220, 30, 46, 0.18);
+		--text: #f5f1ea;
+		--text-dim: #9a948b;
+		--text-subtle: #6a655e;
+		--gold: #c9a96b;
+	}
+
+	.ab-dashboard * {
+		box-sizing: border-box;
+		margin: 0;
+		padding: 0;
+	}
+
+	.ab-dashboard,
+	.ab-dashboard {
+		background: var(--bg);
+		color: var(--text);
+		font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+		font-weight: 400;
+		line-height: 1.5;
+		-webkit-font-smoothing: antialiased;
+	}
+
+	.ab-dashboard .container {
+		max-width: 1400px;
+		margin: 0 auto;
+		padding: 48px 40px 80px;
+	}
+	/* === HEADER === */
+
+	.ab-dashboard header {
+		border-bottom: 1px solid var(--border);
+		padding-bottom: 32px;
+		margin-bottom: 40px;
+	}
+
+	.ab-dashboard .logo-wrap {
+		display: flex;
+		align-items: center;
+		gap: 22px;
+		margin-bottom: 18px;
+	}
+
+	.ab-dashboard .logo-svg {
+		height: 84px;
+		width: auto;
+		display: block;
+	}
+
+	.ab-dashboard .logo-tag {
+		font-family: 'Inter', sans-serif;
+		font-size: 11px;
+		font-weight: 500;
+		letter-spacing: 4px;
+		text-transform: uppercase;
+		color: var(--text-dim);
+		border-left: 1px solid var(--border);
+		padding-left: 22px;
+		align-self: center;
+	}
+
+	.ab-dashboard .header-meta {
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-end;
+		flex-wrap: wrap;
+		gap: 16px;
+	}
+
+	.ab-dashboard h1 {
+		font-family: 'Bodoni Moda', serif;
+		font-weight: 400;
+		font-size: 32px;
+		letter-spacing: -0.5px;
+		color: var(--text) !important;
+	}
+
+	.ab-dashboard h1 em {
+		color: var(--red) !important;
+		font-style: italic;
+	}
+
+	.ab-dashboard .date-range {
+		font-size: 12px;
+		letter-spacing: 2px;
+		text-transform: uppercase;
+		color: var(--text-dim);
+		text-align: right;
+	}
+
+	.ab-dashboard .date-range strong {
+		color: var(--text);
+		display: block;
+		font-size: 14px;
+		letter-spacing: 1px;
+		margin-top: 4px;
+		font-weight: 500;
+	}
+	/* === KPI GRID === */
+
+	.ab-dashboard .kpi-grid {
+		display: grid;
+		grid-template-columns: repeat(5, 1fr);
+		gap: 16px;
+		margin-bottom: 40px;
+	}
+
+	.ab-dashboard .kpi {
+		background: var(--panel);
+		border: 1px solid var(--border);
+		padding: 24px 24px 28px;
+		position: relative;
+		overflow: hidden;
+	}
+
+	.ab-dashboard .kpi::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 3px;
+		height: 100%;
+		background: var(--red);
+		opacity: 0.6;
+	}
+
+	.ab-dashboard .kpi.featured::before {
+		opacity: 1;
+	}
+
+	.ab-dashboard .kpi.featured {
+		background: linear-gradient(180deg, var(--panel) 0%, #181010 100%);
+		border-color: #3a1a1f;
+	}
+
+	.ab-dashboard .kpi-label {
+		font-size: 10px;
+		font-weight: 600;
+		letter-spacing: 2.5px;
+		text-transform: uppercase;
+		color: var(--text-dim);
+		margin-bottom: 14px;
+	}
+
+	.ab-dashboard .kpi-value {
+		font-family: 'Bodoni Moda', serif;
+		font-size: 56px;
+		font-weight: 600;
+		line-height: 1;
+		letter-spacing: -1px;
+		color: var(--text);
+	}
+
+	.ab-dashboard .kpi.featured .kpi-value {
+		color: var(--red);
+	}
+
+	.ab-dashboard .kpi-value .unit {
+		font-size: 24px;
+		color: var(--text-dim);
+		font-weight: 400;
+		margin-left: 4px;
+	}
+
+	.ab-dashboard .kpi-sub {
+		margin-top: 10px;
+		font-size: 12px;
+		color: var(--text-dim);
+	}
+
+	.ab-dashboard .kpi-sub strong {
+		color: var(--text);
+		font-weight: 500;
+	}
+
+	.ab-dashboard .kpi-delta {
+		margin-top: 12px;
+		display: flex;
+		align-items: baseline;
+		gap: 10px;
+		font-size: 12px;
+		font-weight: 500;
+		letter-spacing: 0.3px;
+	}
+
+	.ab-dashboard .kpi-delta-arrow {
+		font-size: 14px;
+		line-height: 1;
+		font-weight: 700;
+	}
+
+	.ab-dashboard .kpi-delta-up {
+		color: #6ee7a8;
+	}
+
+	.ab-dashboard .kpi-delta-down {
+		color: #f59e6b;
+	}
+
+	.ab-dashboard .kpi-delta-flat {
+		color: var(--text-dim);
+	}
+
+	.ab-dashboard .kpi-prior {
+		color: var(--text-subtle);
+		font-size: 10px;
+		letter-spacing: 1.5px;
+		text-transform: uppercase;
+		margin-left: auto;
+	}
+
+	.ab-dashboard .kpi-prior strong {
+		color: var(--text-dim);
+		font-weight: 500;
+		letter-spacing: 0.5px;
+		text-transform: none;
+		font-size: 11px;
+	}
+	/* === SECTION === */
+
+	.ab-dashboard .section-title {
+		font-family: 'Bodoni Moda', serif;
+		font-size: 22px;
+		font-weight: 500;
+		letter-spacing: -0.3px;
+		margin-bottom: 18px;
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		color: var(--text) !important;
+	}
+
+	.ab-dashboard .section-title::before {
+		content: '';
+		width: 24px;
+		height: 1px;
+		background: var(--red);
+	}
+
+	.ab-dashboard .section-title .accent {
+		color: var(--red) !important;
+		font-style: italic;
+	}
+	/* === CHART GRID === */
+
+	.ab-dashboard .row {
+		display: grid;
+		gap: 20px;
+		margin-bottom: 24px;
+	}
+
+	.ab-dashboard .row-2-1 {
+		grid-template-columns: 2fr 1fr;
+	}
+
+	.ab-dashboard .row-1-1 {
+		grid-template-columns: 1fr 1fr;
+	}
+
+	.ab-dashboard .row-1-1-1 {
+		grid-template-columns: 1fr 1fr 1fr;
+	}
+
+	.ab-dashboard .panel {
+		background: var(--panel);
+		border: 1px solid var(--border);
+		padding: 24px;
+	}
+
+	.ab-dashboard .panel-title {
+		font-size: 11px;
+		font-weight: 600;
+		letter-spacing: 2.5px;
+		text-transform: uppercase;
+		color: var(--text-dim);
+		margin-bottom: 4px;
+	}
+
+	.ab-dashboard .panel-headline {
+		font-family: 'Bodoni Moda', serif;
+		font-size: 18px;
+		font-weight: 500;
+		margin-bottom: 22px;
+		color: var(--text);
+	}
+
+	.ab-dashboard .chart-box {
+		position: relative;
+		height: 280px;
+	}
+
+	.ab-dashboard .chart-box.tall {
+		height: 320px;
+	}
+
+	.ab-dashboard .chart-box.short {
+		height: 220px;
+	}
+	/* === TABLE === */
+
+	.ab-dashboard table {
+		width: 100%;
+		border-collapse: collapse;
+		font-size: 13px;
+	}
+
+	.ab-dashboard th {
+		text-align: left;
+		font-size: 10px;
+		font-weight: 600;
+		letter-spacing: 1.5px;
+		text-transform: uppercase;
+		color: var(--text-dim);
+		border-bottom: 1px solid var(--border);
+		padding: 10px 12px;
+	}
+
+	.ab-dashboard th.num,
+	.ab-dashboard td.num {
+		text-align: right;
+	}
+
+	.ab-dashboard td {
+		padding: 12px;
+		border-bottom: 1px solid #1f1f1f;
+		color: var(--text);
+	}
+
+	.ab-dashboard tr:last-child td {
+		border-bottom: none;
+	}
+
+	.ab-dashboard tr:hover td {
+		background: var(--panel-2);
+	}
+
+	.ab-dashboard .pill {
+		display: inline-block;
+		padding: 3px 10px;
+		border-radius: 999px;
+		font-size: 10px;
+		font-weight: 600;
+		letter-spacing: 1px;
+		text-transform: uppercase;
+	}
+
+	.ab-dashboard .pill-definite {
+		background: var(--red-glow);
+		color: var(--red);
+		border: 1px solid var(--red-dim);
+	}
+
+	.ab-dashboard .pill-zero {
+		color: var(--text-subtle);
+	}
+	/* === FOOTER === */
+
+	.ab-dashboard footer {
+		margin-top: 48px;
+		padding-top: 24px;
+		border-top: 1px solid var(--border);
+		display: flex;
+		justify-content: space-between;
+		font-size: 11px;
+		color: var(--text-subtle);
+		letter-spacing: 1px;
+		text-transform: uppercase;
+	}
+
+	.ab-dashboard footer .mark {
+		font-family: 'Bodoni Moda', serif;
+		color: var(--red);
+		letter-spacing: 2px;
+		font-style: italic;
+	}
+
+	@media (max-width: 1200px) {
+		.ab-dashboard .kpi-grid {
+			grid-template-columns: repeat(3, 1fr);
+		}
+	}
+
+	@media (max-width: 760px) {
+		.ab-dashboard .kpi-grid {
+			grid-template-columns: repeat(2, 1fr);
+		}
+		.ab-dashboard .row-2-1,
+		.ab-dashboard .row-1-1,
+		.ab-dashboard .row-1-1-1 {
+			grid-template-columns: 1fr;
+		}
+		.ab-dashboard .logo-svg {
+			height: 60px;
+		}
+	}
+</style>
+<div class="ab-dashboard">
+	<div class="container">
+		<header>
+			<div class="logo-wrap"><img class="logo-svg fr-fil fr-dib" src="data:image/png;base64,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"
+				alt="AperiBar">
+				<div class="logo-tag">Lead Performance Report</div>
+			</div>
+			<div class="header-meta">
+				<h1>Year-to-Date Lead <em>Pipeline</em> Snapshot</h1>
+				<div class="date-range">Current Period&nbsp;<strong>Jan 1 &mdash; Aug 26, 2026</strong>
+					<div style="margin-top: 10px; font-size: 11px; color: var(--text-subtle);">vs same period prior year&nbsp;&nbsp;<span style="color: var(--text-dim); letter-spacing: 0.5px; text-transform: none; font-size: 12px;">Jan 1 &mdash; Aug 27, 2025</span></div>
+				</div>
+			</div>
+		</header>
+		<!-- KPI ROW -->
+		<div class="kpi-grid">
+			<div class="kpi featured">
+				<div class="kpi-label">Total Leads</div>
+				<div class="kpi-value">177</div>
+				<div class="kpi-delta"><span class="kpi-delta-flat"><span class="kpi-delta-arrow">&rarr;</span> &minus;0.6%</span> <span class="kpi-prior">Prior:&nbsp;<strong>178</strong></span></div>
+			</div>
+			<div class="kpi">
+				<div class="kpi-label">Confirmed Bookings</div>
+				<div class="kpi-value">30</div>
+				<div class="kpi-delta"><span class="kpi-delta-up"><span class="kpi-delta-arrow">&uarr;</span> +7.1%</span> <span class="kpi-prior">Prior:&nbsp;<strong>28</strong></span></div>
+			</div>
+			<div class="kpi featured">
+				<div class="kpi-label">Conversion Rate</div>
+				<div class="kpi-value">16.9<span class="unit">%</span></div>
+				<div class="kpi-delta"><span class="kpi-delta-up"><span class="kpi-delta-arrow">&uarr;</span> +1.2 pp</span> <span class="kpi-prior">Prior:&nbsp;<strong>15.7%</strong></span></div>
+			</div>
+			<div class="kpi">
+				<div class="kpi-label">Avg. Party Size</div>
+				<div class="kpi-value">29.7</div>
+				<div class="kpi-delta"><span class="kpi-delta-flat"><span class="kpi-delta-arrow">&rarr;</span> &minus;1.0%</span> <span class="kpi-prior">Prior:&nbsp;<strong>30.0</strong></span></div>
+			</div>
+			<div class="kpi">
+				<div class="kpi-label">Confirmed Guests</div>
+				<div class="kpi-value">655</div>
+				<div class="kpi-delta"><span class="kpi-delta-flat"><span class="kpi-delta-arrow">&rarr;</span> +1.2%</span> <span class="kpi-prior">Prior:&nbsp;<strong>647</strong></span></div>
+			</div>
+		</div>
+		<!-- PERIOD-OVER-PERIOD CALLOUT -->
+		<div class="panel" style="margin-bottom: 24px; border-left: 3px solid var(--red); background: linear-gradient(90deg, #181010 0%, var(--panel) 60%);">
+			<div class="panel-title">Headline</div>
+			<div style="font-family: 'Bodoni Moda', serif; font-size: 20px; font-weight: 500; line-height: 1.4; color: var(--text);">Leads are flat at <span style="color: var(--text);">177</span> (vs 178 last year), but conversion ticked up from <span style="color: var(--text);">15.7%</span> to <span style="color: var(--red); font-style: italic;">16.9%</span> &mdash; a modest, real gain in close rate on essentially the same volume.</div>
+			<div style="margin-top: 14px; font-size: 12px; color: var(--text-dim); line-height: 1.55;">Confirmed bookings are up <strong style="color: var(--text);">+7.1%</strong> to 30 (vs 28), and confirmed guests held steady at 655 (vs 647) even as average party size dipped slightly to 29.7 (vs 30.0). Open Prospect looks much larger this year (<strong style="color: var(--text);">73</strong> vs 27), but that&rsquo;s mostly a timing effect: this year&rsquo;s YTD leads are still working through the funnel, while last year&rsquo;s have had a full year to resolve to Won or Lost. <em>Booked and conversion are the most reliable apples-to-apples signals here &mdash; read Lost/Prospect directionally.</em></div>
+		</div>
+		<!-- LEADS OVER TIME -->
+		<div class="row row-2-1">
+			<div class="panel">
+				<div class="panel-title">Lead Volume &mdash; Month-Over-Month, Current vs Prior</div>
+				<div class="panel-headline">Are leads up <span style="color: var(--red); font-style: italic;">where it counts?</span></div>
+				<div class="chart-box tall">
+					<canvas id="ab-comparisonChart">
+						<br>
+					</canvas>
+				</div>
+				<div style="margin-top: 10px; font-size: 11px; color: var(--text-subtle); letter-spacing: 0.5px;">Jan&ndash;Aug, aligned by calendar month.</div>
+			</div>
+			<div class="panel">
+				<div class="panel-title">Booking Funnel &mdash; Current vs Prior</div>
+				<div class="panel-headline">Where leads <span style="color: var(--red); font-style: italic;">land</span></div>
+				<div class="chart-box tall">
+					<canvas id="ab-statusChart">
+						<br>
+					</canvas>
+				</div>
+			</div>
+		</div>
+		<!-- CONVERSION RATE BY MONTH -->
+		<div class="row row-2-1">
+			<div class="panel">
+				<div class="panel-title">Conversion Rate &mdash; Month-Over-Month, Current vs Prior</div>
+				<div class="panel-headline">Same leads, <span style="color: var(--red); font-style: italic;">tighter close</span></div>
+				<div class="chart-box tall">
+					<canvas id="ab-convChart">
+						<br>
+					</canvas>
+				</div>
+				<div style="margin-top: 10px; font-size: 11px; color: var(--text-subtle); letter-spacing: 0.5px;">Booked (DEFINITE + CLOSED) &divide; total leads submitted that month.</div>
+			</div>
+			<div class="panel">
+				<div class="panel-title">Read</div>
+				<div class="panel-headline">Recent months are <span style="color: var(--red); font-style: italic;">converting fast</span></div>
+				<div style="font-size: 13px; color: var(--text-dim); line-height: 1.7;">
+					<div style="margin-bottom: 14px;">Conversion was choppy early in the year on both sides &mdash; swinging 5%&ndash;22% month to month &mdash; but 2026 pulled ahead from June on: <strong style="color: var(--text);">33.3%</strong> in June, <strong style="color: var(--red);">57.1%</strong> in July, <strong style="color: var(--text);">40.0%</strong> in August, all above 2025&rsquo;s same months.</div>
+					<div style="font-size: 11px; color: var(--text-subtle); border-top: 1px solid var(--border); padding-top: 12px; margin-top: 4px;">Jul&ndash;Aug 2026 conversion runs on very small monthly samples (5&ndash;7 leads) and reflects only what has resolved so far &mdash; read the recent months as an early signal, not a settled rate.</div>
+				</div>
+			</div>
+		</div>
+		<!-- PARTY SIZE + SOURCE -->
+		<div class="row row-1-1">
+			<div class="panel">
+				<div class="panel-title">Party Size Distribution &mdash; Current vs Prior</div>
+				<div class="panel-headline">How <span style="color: var(--red); font-style: italic;">large</span> are guest parties?</div>
+				<div class="chart-box short">
+					<canvas id="ab-bucketChart">
+						<br>
+					</canvas>
+				</div>
+				<div style="margin-top: 14px; font-size: 12px; color: var(--text-dim); border-top: 1px solid var(--border); padding-top: 14px;">The 41&ndash;60 guest band grew <strong style="color: #6ee7a8;">+66.7%</strong> YTD (12 &rarr; 20) while the 26&ndash;40 band contracted <strong style="color: #f59e6b;">&minus;21.2%</strong> (52 &rarr; 41). Smaller parties (1&ndash;15) also picked up (36 &rarr; 43). The gains at both ends roughly offset, which is why average party size held essentially flat at 29.7 vs 30.0.</div>
+			</div>
+			<div class="panel">
+				<div class="panel-title">Lead Source &mdash; Current vs Prior</div>
+				<div class="panel-headline">Where leads <span style="color: var(--red); font-style: italic;">come from</span></div>
+				<div class="chart-box short">
+					<canvas id="ab-sourceChart">
+						<br>
+					</canvas>
+				</div>
+				<div style="margin-top: 14px; font-size: 12px; color: var(--text-dim); border-top: 1px solid var(--border); padding-top: 14px;"><strong style="color: var(--text);">Tripleseat Web Lead</strong> remains the only real channel (<strong>99.4%</strong> current &middot; <strong>100%</strong> prior, from one Google Integration lead this year). Still no real diversification in acquisition channel.</div>
+			</div>
+		</div>
+		<!-- SEASONAL YOY CHECK -->
+		<h2 class="section-title" style="margin-top: 40px;">Seasonal Pulse&nbsp;<span class="accent">&mdash; Jul 7&ndash;Aug 18, Year-over-Year</span></h2>
+		<div class="row row-2-1">
+			<div class="panel">
+				<div class="panel-title">Leads &amp; Funnel &mdash; Jul 7&ndash;Aug 18, 2025 vs 2026</div>
+				<div class="panel-headline">Same 43-day window, <span style="color: var(--red); font-style: italic;">one year apart</span></div>
+				<div class="chart-box">
+					<canvas id="ab-yoyChart">
+						<br>
+					</canvas>
+				</div>
+			</div>
+			<div class="panel">
+				<div class="panel-title">Read</div>
+				<div class="panel-headline">Fewer leads, <span style="color: var(--red); font-style: italic;">sharper close rate</span></div>
+				<div style="font-size: 13px; color: var(--text-dim); line-height: 1.7;">
+					<div style="margin-bottom: 14px;"><strong style="color: var(--text); font-size: 22px; font-family: 'Bodoni Moda', serif;">11</strong> leads in this window in 2026, down from <strong style="color: var(--text);">34</strong> in 2025 &mdash; a <span style="color: #f59e6b;">&minus;67.6%</span> drop.</div>
+					<div style="margin-bottom: 14px;">Conversion nearly tripled, from <strong style="color: var(--text);">20.6%</strong> to <strong style="color: var(--red);">54.5%</strong>.</div>
+					<div style="margin-bottom: 14px;">Confirmed bookings held close &mdash; <strong style="color: var(--text);">6</strong> vs 7 &mdash; and confirmed guests fell only <span style="color: #f59e6b;">&minus;27.5%</span> (116 vs 160) despite a third as many leads.</div>
+					<div style="font-size: 11px; color: var(--text-subtle); border-top: 1px solid var(--border); padding-top: 12px; margin-top: 4px;">Both windows run the identical 43 days (Jul 7&ndash;Aug 18) to keep the comparison apples-to-apples. 2026 sample is small (11 leads) &mdash; read the conversion jump directionally, not as a settled trend. Standalone seasonal check, separate from the six-month comparison above.</div>
+				</div>
+			</div>
+		</div>
+		<!-- TOP COMPANIES -->
+		<h2 class="section-title">Top Companies&nbsp;<span class="accent">&mdash; by lead volume</span></h2>
+		<div class="panel" style="padding: 8px 8px 12px;">
+			<table>
+				<thead>
+					<tr>
+						<th style="padding-left: 20px;">Rank</th>
+						<th>Company</th>
+						<th class="num">Leads</th>
+						<th class="num">Total Guests</th>
+						<th class="num">Avg Party</th>
+						<th>Status</th>
+					</tr>
+				</thead>
+				<tbody id="ab-companyTable"></tbody>
+			</table>
+		</div>
+		<!-- DEFINITE BOOKINGS -->
+		<h2 class="section-title" style="margin-top: 40px;">Confirmed Bookings&nbsp;<span class="accent">&mdash; 30 definites</span></h2>
+		<div class="panel" style="padding: 8px 8px 12px;">
+			<table>
+				<thead>
+					<tr>
+						<th style="padding-left: 20px;">Event Date</th>
+						<th>Company / Host</th>
+						<th>Contact</th>
+						<th class="num">Guests</th>
+					</tr>
+				</thead>
+				<tbody id="ab-definiteTable"></tbody>
+			</table>
+		</div>
+		<footer>
+			<div>Source: Tripleseat Lead Detail Export &middot; Periods comparable apples-to-apples</div>
+			<div class="mark">AperiBar &middot; New York</div>
+			<div>Generated Aug 27, 2026</div>
+		</footer>
+	</div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script>
+	(function()
+	{
+		function init()
+		{
+			if (typeof Chart === 'undefined')
+			{
+				setTimeout(init, 100);
+				return;
+			}
+			const data = {
+				// Year-to-date, aligned by calendar month: Jan 1–Aug 26, 2026 vs Jan 1–Aug 27, 2025
+				comparison_labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug"],
+				current_leads: [19, 31, 28, 35, 34, 18, 7, 5],
+				current_booked: [2, 2, 5, 4, 5, 6, 4, 2],
+				prior_leads: [22, 18, 19, 28, 27, 18, 19, 27],
+				prior_booked: [2, 4, 1, 3, 6, 3, 4, 5],
+				// Monthly conversion rate = booked ÷ total leads that month
+				current_conv: [10.5, 6.5, 17.9, 11.4, 14.7, 33.3, 57.1, 40.0],
+				prior_conv: [9.1, 22.2, 5.3, 10.7, 22.2, 16.7, 21.1, 18.5],
+				// Booking funnel comparison — full YTD totals
+				funnel:
+				{
+					current:
+					{
+						prospect: 73,
+						booked: 30,
+						lost: 74,
+						total: 177,
+						conv: 16.9
+					},
+					prior:
+					{
+						prospect: 27,
+						booked: 28,
+						lost: 123,
+						total: 178,
+						conv: 15.7
+					}
+				},
+				buckets:
+				{
+					"1–15": 43,
+					"16–25": 60,
+					"26–40": 41,
+					"41–60": 20,
+					"61+": 13
+				},
+				prior_buckets:
+				{
+					"1–15": 36,
+					"16–25": 62,
+					"26–40": 52,
+					"41–60": 12,
+					"61+": 16
+				},
+				sources:
+				{
+					"Tripleseat Web Lead": 176,
+					"Google Integration": 1
+				},
+				prior_sources:
+				{
+					"Tripleseat Web Lead": 178,
+					"Google Integration": 0
+				},
+				// Standalone seasonal check: identical 43-day window (Jul 7–Aug 18), 2025 vs 2026
+				yoy:
+				{
+					y2025:
+					{
+						leads: 34,
+						booked: 7,
+						lost: 17,
+						prospect: 10,
+						conv: 20.6,
+						avg_party: 33.0,
+						confirmed_guests: 160
+					},
+					y2026:
+					{
+						leads: 11,
+						booked: 6,
+						lost: 3,
+						prospect: 2,
+						conv: 54.5,
+						avg_party: 25.1,
+						confirmed_guests: 116
+					}
+				},
+				top_companies: [
+				{
+					name: "FTI Consulting",
+					leads: 3,
+					guests: 71,
+					definite: 2
+				},
+				{
+					name: "PwC",
+					leads: 3,
+					guests: 65,
+					definite: 1
+				},
+				{
+					name: "TikTok",
+					leads: 3,
+					guests: 60,
+					definite: 1
+				},
+				{
+					name: "Cohera",
+					leads: 2,
+					guests: 140,
+					definite: 0
+				},
+				{
+					name: "Wonder",
+					leads: 2,
+					guests: 60,
+					definite: 2
+				},
+				{
+					name: "Morgan Stanley",
+					leads: 2,
+					guests: 37,
+					definite: 0
+				},
+				{
+					name: "ClearView HCP",
+					leads: 1,
+					guests: 100,
+					definite: 0
+				},
+				{
+					name: "CREW NY",
+					leads: 1,
+					guests: 90,
+					definite: 0
+				},
+				{
+					name: "Second Stage Theater",
+					leads: 1,
+					guests: 85,
+					definite: 0
+				},
+				{
+					name: "The Grossman Group",
+					leads: 1,
+					guests: 75,
+					definite: 0
+				}],
+				definite_list: [
+				{
+					company: "Western Pre-Law Society",
+					guests: 50,
+					event_date: "1/30/2026",
+					name: "Braeden Donnelly"
+				},
+				{
+					company: "The Conference Board",
+					guests: 12,
+					event_date: "2/3/2026",
+					name: "Fatoumatta Jaiteh"
+				},
+				{
+					company: "PwC",
+					guests: 25,
+					event_date: "2/24/2026",
+					name: "Ann-Marie McCullough"
+				},
+				{
+					company: "Rutgers University Foundation",
+					guests: 18,
+					event_date: "3/17/2026",
+					name: "Elizabeth Reynolds"
+				},
+				{
+					company: "(Individual host)",
+					guests: 20,
+					event_date: "3/12/2026",
+					name: "Amy Beckwith"
+				},
+				{
+					company: "(Individual host)",
+					guests: 12,
+					event_date: "4/17/2026",
+					name: "Beth Rebeca"
+				},
+				{
+					company: "Definium Therapeutics",
+					guests: 13,
+					event_date: "4/21/2026",
+					name: "Jessica Hopkins"
+				},
+				{
+					company: "(Individual host)",
+					guests: 13,
+					event_date: "4/22/2026",
+					name: "Mark Maniaci"
+				},
+				{
+					company: "AQR Capital Management",
+					guests: 25,
+					event_date: "4/23/2026",
+					name: "Kylie Marshall"
+				},
+				{
+					company: "FTI Consulting",
+					guests: 22,
+					event_date: "4/28/2026",
+					name: "kelsey Pabon"
+				},
+				{
+					company: "Rova",
+					guests: 12,
+					event_date: "5/21/2026",
+					name: "Dayna lipkin"
+				},
+				{
+					company: "(Individual host)",
+					guests: 15,
+					event_date: "6/1/2026",
+					name: "Jennette O'Connor"
+				},
+				{
+					company: "Schrodinger",
+					guests: 20,
+					event_date: "6/3/2026",
+					name: "Ana Negri"
+				},
+				{
+					company: "(Individual host)",
+					guests: 20,
+					event_date: "6/6/2026",
+					name: "Julie Willard"
+				},
+				{
+					company: "TikTok",
+					guests: 20,
+					event_date: "6/8/2026",
+					name: "Dina Liu"
+				},
+				{
+					company: "Campari",
+					guests: 13,
+					event_date: "6/10/2026",
+					name: "Daisha Scott"
+				},
+				{
+					company: "(Individual host)",
+					guests: 15,
+					event_date: "6/17/2026",
+					name: "Blas Lezcano"
+				},
+				{
+					company: "Siemens Healthineers",
+					guests: 15,
+					event_date: "6/23/2026",
+					name: "Lulu Chavez"
+				},
+				{
+					company: "Wonder",
+					guests: 35,
+					event_date: "6/23/2026",
+					name: "Courtney Lawrie"
+				},
+				{
+					company: "FTI Consulting",
+					guests: 24,
+					event_date: "6/25/2026",
+					name: "Alex Patilsen"
+				},
+				{
+					company: "Workday, Inc.",
+					guests: 30,
+					event_date: "6/30/2026",
+					name: "Amanda Weber"
+				},
+				{
+					company: "Woops! Macarons & Gifts",
+					guests: 30,
+					event_date: "7/7/2026",
+					name: "Ben Woodruff"
+				},
+				{
+					company: "Schrödinger",
+					guests: 20,
+					event_date: "7/14/2026",
+					name: "Michael Rosario"
+				},
+				{
+					company: "Wonder",
+					guests: 25,
+					event_date: "7/15/2026",
+					name: "Caroline Zambelli"
+				},
+				{
+					company: "(Individual host)",
+					guests: 15,
+					event_date: "7/16/2026",
+					name: "Bobbi Ford"
+				},
+				{
+					company: "Impinj",
+					guests: 30,
+					event_date: "7/21/2026",
+					name: "Ash deChoudens"
+				},
+				{
+					company: "University of Chicago - Sociology Department",
+					guests: 50,
+					event_date: "8/8/2026",
+					name: "Esther Peters"
+				},
+				{
+					company: "All Stars Project",
+					guests: 16,
+					event_date: "8/11/2026",
+					name: "Phoenix Lin"
+				},
+				{
+					company: "BVP Forge",
+					guests: 13,
+					event_date: "8/11/2026",
+					name: "Kristen Alloro"
+				},
+				{
+					company: "NiCE Cognigy",
+					guests: 27,
+					event_date: "8/25/2026",
+					name: "Jordan Weeks"
+				}]
+			};
+			// === Chart.js global defaults ===
+			Chart.defaults.font.family = "'Inter', sans-serif";
+			Chart.defaults.color = '#9a948b';
+			Chart.defaults.borderColor = '#2a2a2a';
+			const RED = '#dc1e2e';
+			const GOLD = '#c9a96b';
+			const DIM = '#3a3a3a';
+			const TEXT = '#f5f1ea';
+			// === Period-over-Period Comparison: Current vs Prior leads by month-in-period ===
+			new Chart(document.getElementById('ab-comparisonChart'),
+			{
+				type: 'bar',
+				data:
+				{
+					labels: data.comparison_labels,
+					datasets: [
+					{
+						label: 'Prior Period — Total Leads',
+						data: data.prior_leads,
+						backgroundColor: '#5a5a5a',
+						borderRadius: 2
+					},
+					{
+						label: 'Current Period — Total Leads',
+						data: data.current_leads,
+						backgroundColor: RED,
+						borderRadius: 2
+					},
+					{
+						label: 'Prior — Bookings Won',
+						data: data.prior_booked,
+						type: 'line',
+						borderColor: '#9a948b',
+						backgroundColor: '#9a948b',
+						borderWidth: 2,
+						borderDash: [4, 4],
+						pointRadius: 3,
+						pointBackgroundColor: '#9a948b',
+						tension: 0.3
+					},
+					{
+						label: 'Current — Bookings Won',
+						data: data.current_booked,
+						type: 'line',
+						borderColor: '#f5f1ea',
+						backgroundColor: '#f5f1ea',
+						borderWidth: 2,
+						pointRadius: 3,
+						pointBackgroundColor: '#f5f1ea',
+						tension: 0.3
+					}]
+				},
+				options:
+				{
+					responsive: true,
+					maintainAspectRatio: false,
+					plugins:
+					{
+						legend:
+						{
+							position: 'bottom',
+							labels:
+							{
+								color: '#9a948b',
+								boxWidth: 12,
+								padding: 14,
+								font:
+								{
+									size: 11
+								}
+							}
+						},
+						tooltip:
+						{
+							backgroundColor: '#0a0a0a',
+							borderColor: '#dc1e2e',
+							borderWidth: 1,
+							padding: 12
+						}
+					},
+					scales:
+					{
+						x:
+						{
+							grid:
+							{
+								display: false
+							},
+							ticks:
+							{
+								color: '#9a948b',
+								font:
+								{
+									size: 11
+								}
+							}
+						},
+						y:
+						{
+							grid:
+							{
+								color: '#1f1f1f'
+							},
+							ticks:
+							{
+								color: '#9a948b'
+							},
+							title:
+							{
+								display: true,
+								text: 'Leads / Bookings',
+								color: '#6a655e',
+								font:
+								{
+									size: 10
+								}
+							}
+						}
+					}
+				}
+			});
+			// === Funnel Comparison (horizontal grouped bars) ===
+			new Chart(document.getElementById('ab-statusChart'),
+			{
+				type: 'bar',
+				data:
+				{
+					labels: ['Total Leads', 'Bookings Won', 'Lost', 'Open Prospect'],
+					datasets: [
+					{
+						label: 'Current Period',
+						data: [data.funnel.current.total, data.funnel.current.booked, data.funnel.current.lost, data.funnel.current.prospect],
+						backgroundColor: RED,
+						borderRadius: 2
+					},
+					{
+						label: 'Prior Period',
+						data: [data.funnel.prior.total, data.funnel.prior.booked, data.funnel.prior.lost, data.funnel.prior.prospect],
+						backgroundColor: '#5a5a5a',
+						borderRadius: 2
+					}]
+				},
+				options:
+				{
+					indexAxis: 'y',
+					responsive: true,
+					maintainAspectRatio: false,
+					plugins:
+					{
+						legend:
+						{
+							position: 'bottom',
+							labels:
+							{
+								color: '#9a948b',
+								boxWidth: 12,
+								padding: 14,
+								font:
+								{
+									size: 11
+								}
+							}
+						},
+						tooltip:
+						{
+							backgroundColor: '#0a0a0a',
+							borderColor: '#dc1e2e',
+							borderWidth: 1,
+							padding: 12
+						}
+					},
+					scales:
+					{
+						x:
+						{
+							grid:
+							{
+								color: '#1f1f1f'
+							},
+							ticks:
+							{
+								color: '#9a948b'
+							}
+						},
+						y:
+						{
+							grid:
+							{
+								display: false
+							},
+							ticks:
+							{
+								color: '#f5f1ea',
+								font:
+								{
+									size: 12,
+									weight: '500'
+								}
+							}
+						}
+					}
+				}
+			});
+			// === Conversion Rate — Month-Over-Month, Current vs Prior ===
+			new Chart(document.getElementById('ab-convChart'),
+			{
+				type: 'line',
+				data:
+				{
+					labels: data.comparison_labels,
+					datasets: [
+					{
+						label: 'Prior Period — Conversion %',
+						data: data.prior_conv,
+						borderColor: '#9a948b',
+						backgroundColor: '#9a948b',
+						borderWidth: 2,
+						borderDash: [4, 4],
+						pointRadius: 3,
+						pointBackgroundColor: '#9a948b',
+						tension: 0.3,
+						fill: false
+					},
+					{
+						label: 'Current Period — Conversion %',
+						data: data.current_conv,
+						borderColor: RED,
+						backgroundColor: RED,
+						borderWidth: 2.5,
+						pointRadius: 4,
+						pointBackgroundColor: RED,
+						tension: 0.3,
+						fill: false
+					}]
+				},
+				options:
+				{
+					responsive: true,
+					maintainAspectRatio: false,
+					plugins:
+					{
+						legend:
+						{
+							position: 'bottom',
+							labels:
+							{
+								color: '#9a948b',
+								boxWidth: 12,
+								padding: 14,
+								font:
+								{
+									size: 11
+								}
+							}
+						},
+						tooltip:
+						{
+							backgroundColor: '#0a0a0a',
+							borderColor: '#dc1e2e',
+							borderWidth: 1,
+							padding: 12,
+							callbacks:
+							{
+								label: ctx => `${ctx.dataset.label}: ${ctx.parsed.y}%`
+							}
+						}
+					},
+					scales:
+					{
+						x:
+						{
+							grid:
+							{
+								display: false
+							},
+							ticks:
+							{
+								color: '#9a948b',
+								font:
+								{
+									size: 11
+								}
+							}
+						},
+						y:
+						{
+							grid:
+							{
+								color: '#1f1f1f'
+							},
+							ticks:
+							{
+								color: '#9a948b',
+								callback: v => v + '%'
+							},
+							title:
+							{
+								display: true,
+								text: 'Conversion Rate',
+								color: '#6a655e',
+								font:
+								{
+									size: 10
+								}
+							}
+						}
+					}
+				}
+			});
+			// === Party Size Buckets — Current vs Prior ===
+			new Chart(document.getElementById('ab-bucketChart'),
+			{
+				type: 'bar',
+				data:
+				{
+					labels: Object.keys(data.buckets),
+					datasets: [
+					{
+						label: 'Prior Period',
+						data: Object.values(data.prior_buckets),
+						backgroundColor: '#5a5a5a',
+						borderRadius: 2
+					},
+					{
+						label: 'Current Period',
+						data: Object.values(data.buckets),
+						backgroundColor: RED,
+						borderRadius: 2
+					}]
+				},
+				options:
+				{
+					responsive: true,
+					maintainAspectRatio: false,
+					plugins:
+					{
+						legend:
+						{
+							position: 'bottom',
+							labels:
+							{
+								color: '#9a948b',
+								boxWidth: 12,
+								padding: 14,
+								font:
+								{
+									size: 11
+								}
+							}
+						},
+						tooltip:
+						{
+							backgroundColor: '#0a0a0a',
+							borderColor: '#dc1e2e',
+							borderWidth: 1,
+							padding: 12
+						}
+					},
+					scales:
+					{
+						x:
+						{
+							grid:
+							{
+								display: false
+							},
+							ticks:
+							{
+								color: '#9a948b'
+							},
+							title:
+							{
+								display: true,
+								text: 'Guests in Party',
+								color: '#6a655e',
+								font:
+								{
+									size: 10
+								}
+							}
+						},
+						y:
+						{
+							grid:
+							{
+								color: '#1f1f1f'
+							},
+							ticks:
+							{
+								color: '#9a948b'
+							}
+						}
+					}
+				}
+			});
+			// === Source — Current vs Prior ===
+			new Chart(document.getElementById('ab-sourceChart'),
+			{
+				type: 'bar',
+				data:
+				{
+					labels: Object.keys(data.sources),
+					datasets: [
+					{
+						label: 'Prior Period',
+						data: Object.keys(data.sources).map(k => data.prior_sources[k] || 0),
+						backgroundColor: '#5a5a5a',
+						borderRadius: 2
+					},
+					{
+						label: 'Current Period',
+						data: Object.values(data.sources),
+						backgroundColor: RED,
+						borderRadius: 2
+					}]
+				},
+				options:
+				{
+					indexAxis: 'y',
+					responsive: true,
+					maintainAspectRatio: false,
+					plugins:
+					{
+						legend:
+						{
+							position: 'bottom',
+							labels:
+							{
+								color: '#9a948b',
+								boxWidth: 12,
+								padding: 14,
+								font:
+								{
+									size: 11
+								}
+							}
+						},
+						tooltip:
+						{
+							backgroundColor: '#0a0a0a',
+							borderColor: '#dc1e2e',
+							borderWidth: 1,
+							padding: 12
+						}
+					},
+					scales:
+					{
+						x:
+						{
+							grid:
+							{
+								color: '#1f1f1f'
+							},
+							ticks:
+							{
+								color: '#9a948b'
+							}
+						},
+						y:
+						{
+							grid:
+							{
+								display: false
+							},
+							ticks:
+							{
+								color: '#f5f1ea',
+								font:
+								{
+									size: 12,
+									weight: '500'
+								}
+							}
+						}
+					}
+				}
+			});
+			// === Seasonal YoY — Jul 7–Aug 18, 2025 vs 2026 ===
+			new Chart(document.getElementById('ab-yoyChart'),
+			{
+				type: 'bar',
+				data:
+				{
+					labels: ['Total Leads', 'Bookings Won', 'Lost', 'Open Prospect'],
+					datasets: [
+					{
+						label: '2025',
+						data: [data.yoy.y2025.leads, data.yoy.y2025.booked, data.yoy.y2025.lost, data.yoy.y2025.prospect],
+						backgroundColor: '#5a5a5a',
+						borderRadius: 2
+					},
+					{
+						label: '2026',
+						data: [data.yoy.y2026.leads, data.yoy.y2026.booked, data.yoy.y2026.lost, data.yoy.y2026.prospect],
+						backgroundColor: RED,
+						borderRadius: 2
+					}]
+				},
+				options:
+				{
+					responsive: true,
+					maintainAspectRatio: false,
+					plugins:
+					{
+						legend:
+						{
+							position: 'bottom',
+							labels:
+							{
+								color: '#9a948b',
+								boxWidth: 12,
+								padding: 14,
+								font:
+								{
+									size: 11
+								}
+							}
+						},
+						tooltip:
+						{
+							backgroundColor: '#0a0a0a',
+							borderColor: '#dc1e2e',
+							borderWidth: 1,
+							padding: 12
+						}
+					},
+					scales:
+					{
+						x:
+						{
+							grid:
+							{
+								display: false
+							},
+							ticks:
+							{
+								color: '#9a948b',
+								font:
+								{
+									size: 11
+								}
+							}
+						},
+						y:
+						{
+							grid:
+							{
+								color: '#1f1f1f'
+							},
+							ticks:
+							{
+								color: '#9a948b'
+							},
+							title:
+							{
+								display: true,
+								text: 'Leads',
+								color: '#6a655e',
+								font:
+								{
+									size: 10
+								}
+							}
+						}
+					}
+				}
+			});
+			// === Companies Table ===
+			const ctbody = document.getElementById('ab-companyTable');
+			data.top_companies.forEach((c, i) =>
+			{
+				const tr = document.createElement('tr');
+				const avg = (c.guests / c.leads).toFixed(0);
+				const statusPill = c.definite > 0 ? `<span class="pill pill-definite">${c.definite} Definite</span>` : `<span class="pill pill-zero">In pipeline</span>`;
+				tr.innerHTML = `
+    <td style="padding-left: 20px; color: var(--text-dim); font-family: 'Bodoni Moda', serif; font-size: 16px;">${String(i+1).padStart(2,'0')}</td>
+    <td style="font-weight: 500;">${c.name}</td>
+    <td class="num">${c.leads}</td>
+    <td class="num">${c.guests}</td>
+    <td class="num">${avg}</td>
+    <td>${statusPill}</td>
+  `;
+				ctbody.appendChild(tr);
+			});
+			// === Definite Table ===
+			const dtbody = document.getElementById('ab-definiteTable');
+			const sorted = [...data.definite_list].sort((a, b) =>
+			{
+				const [am, ad, ay] = a.event_date.split('/').map(Number);
+				const [bm, bd, by] = b.event_date.split('/').map(Number);
+				return new Date(ay, am - 1, ad) - new Date(by, bm - 1, bd);
+			});
+			sorted.forEach(d =>
+			{
+				const tr = document.createElement('tr');
+				tr.innerHTML = `
+    <td style="padding-left: 20px; color: var(--red); font-weight: 500;">${d.event_date}</td>
+    <td style="font-weight: 500;">${d.company}</td>
+    <td style="color: var(--text-dim);">${d.name}</td>
+    <td class="num" style="font-family: 'Bodoni Moda', serif; font-size: 16px; color: var(--text);">${d.guests}</td>
+  `;
+				dtbody.appendChild(tr);
+			});
+		}
+		if (document.readyState === 'loading')
+		{
+			document.addEventListener('DOMContentLoaded', init);
+		}
+		else
+		{
+			init();
+		}
+	})();
+</script>
+<!-- ===== /AperiBar Lead Performance Dashboard ===== -->
+
+</body>
+</html>
