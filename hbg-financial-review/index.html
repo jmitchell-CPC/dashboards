@@ -602,7 +602,8 @@ function drawExpenses(){
       const segH = (val/maxV)*plotH;
       const topY = cursorY - segH;
       const isTop = si === EXPENSE_SERIES.length-1;
-      bars += `<rect x="${bx}" y="${topY+ (si>0?gap:0)}" width="${barW}" height="${Math.max(segH-(si>0?gap:0),0)}" rx="${isTop?4:0}" fill="${s.color}" data-i="${i}" data-s="${si}" class="exp-seg"/>`;
+      bars += `<rect x="${bx}" y="${topY+ (si>0?gap:0)}" width="${barW}" height="${Math.max(segH-(si>0?gap:0),0)}"
+        rx="${isTop?4:0}" fill="${s.color}" data-i="${i}" data-s="${si}" class="exp-seg"/>`;
       cursorY = topY;
     });
     xticks += `<text x="${cx}" y="${H-10}" text-anchor="middle" class="axis-label">${d.month}</text>`;
