@@ -476,7 +476,7 @@ function renderBudget(){
   </tbody>`;
 }
 
-/* ---------------- prior-year comparison pages (August and July) ---------------- */
+/* ---------------- prior-year comparison pages ---------------- */
 function renderYoYSummary(tableId, narrativeId, sumRows, pyLab, cyLab, narrativeFn){
   renderCompareTable(tableId, sumRows, [pyLab, cyLab, "Growth"]);
   document.getElementById(narrativeId).innerHTML = narrativeFn(l => findIn(sumRows,l));
@@ -497,16 +497,6 @@ function augYoYNarrative(f){
     <p><strong>Payroll leverage did most of the work.</strong> Payroll rose only ${fmt$(pay.delta)} (+${pay.growth.toFixed(1)}%) against ${rev.growth.toFixed(1)}% revenue growth, falling from ${(pay.py/rev.py*100).toFixed(1)}% to ${(pay.cy/rev.cy*100).toFixed(1)}% of revenue. Management wages were down ${fmt$(Math.abs(mw.delta))} (a manager was unpaid on the 8/20 payroll, a one-time effect), while front-of-house wages rose ${fmt$(fo.delta)} (+${fo.growth.toFixed(1)}%, with bartender wages up ${bart.growth.toFixed(0)}%) and kitchen wages were flat. Occupancy was up ${fmt$(occ.delta)} (+${occ.growth.toFixed(1)}%) and Operations was essentially flat (+${fmt$(ops.delta)}), though the management fee grew ${fmt$(mg.delta)} (+${mg.growth.toFixed(1)}%) with sales.</p>
     <p><strong>Financial costs are the one category growing faster than revenue.</strong> Financial rose ${fmt$(fin.delta)} (+${fin.growth.toFixed(1)}%): ${fmt$(intr.cy)} of new SBA-loan interest (no loan a year ago), card fees up ${fmt$(cc.delta)} (+${cc.growth.toFixed(1)}%) with sales, partly offset by a ${fmt$(Math.abs(findIn(FULL_YOY_AUG.filter(r=>r.type==="leaf"),"Sales Tax Expense").delta))} swing in Sales Tax Expense, which is running as a credit and is an open question with the bookkeeper. Repairs &amp; Maintenance (${rep.growth.toFixed(1)}%) and Supplies (${sup.growth.toFixed(1)}%) were both lower.</p>
     <p><strong>Two comparison caveats flatter the year-over-year result.</strong> August 2025 included a ${fmt$(4263.22)} credit in "Uncategorized Expense (Income)"; without it, August 2025 net income would have been ${fmt$(niExCredit)} and the improvement even larger. In the other direction, the August 2025 management fee was an estimate (no invoice had been received) and August 2026 profit benefits from the one-time management-wage reduction and low COGS noted above, so a fair run-rate for August 2026 profit is below the reported figure (see the "Profit Opportunities" page).</p>
-  `;
-}
-
-function julYoYNarrative(f){
-  const rev=f("Total Revenue"), cogs=f("Cost of Goods Sold"), gpm=f("Gross Profit Margin"), pay=f("Payroll"), fin=f("Financial"), sup=f("Supplies"), rep=f("Repairs & Maintenance"), ops=f("Operations");
-  const tot=f("Total Expenses"), ni=f("Net Income"), nm=f("Net Margin");
-  return `
-    <p><strong>July revenue grew ${rev.growth.toFixed(1)}% but net income fell ${Math.abs(ni.growth).toFixed(1)}% — a reversal of the original July read.</strong> July 2026 revenue of ${fmt$(rev.cy)} was up ${fmt$(rev.delta)} from ${fmt$(rev.py)}, but net income fell from ${fmt$(ni.py)} to ${fmt$(ni.cy)} and net margin from ${nm.py.toFixed(1)}% to ${nm.cy.toFixed(1)}%. The earlier version of this page showed July net income up 28.8%; that used the original July statement, which omitted the 5% management fee (${fmt$(12414.59)}) that was in the July 2025 comparative. This page now uses the restated July column from the Jun–Aug package against the restated July column of the 2025 package, so both years carry the fee.</p>
-    <p><strong>Cost of goods sold grew far faster than revenue.</strong> COGS rose ${fmt$(cogs.delta)} (+${cogs.growth.toFixed(1)}%), more than double the revenue growth rate, pulling gross margin down ${Math.abs(gpm.delta).toFixed(1)} points from ${gpm.py.toFixed(1)}% to ${gpm.cy.toFixed(1)}%. July purchases were heavy (food purchases of ${fmt$(54455.19)} and liquor purchases of ${fmt$(6494.94)}); August's low COGS rate is the other side of the same timing.</p>
-    <p><strong>Operating expenses grew in nearly every category.</strong> Total expenses rose ${fmt$(tot.delta)} (+${tot.growth.toFixed(1)}%) versus +${rev.growth.toFixed(1)}% revenue growth. Payroll was up ${fmt$(pay.delta)} (+${pay.growth.toFixed(1)}%), Supplies ${fmt$(sup.delta)} (+${sup.growth.toFixed(1)}%, including a ${fmt$(3614.56)} small-equipment purchase), Financial ${fmt$(fin.delta)} (+${fin.growth.toFixed(1)}%), and Repairs &amp; Maintenance rose ${fmt$(rep.delta)} on one-off appliance repairs (July 2025 was a net credit, so the percentage is not meaningful). Operations was up only ${fmt$(ops.delta)} (+${ops.growth.toFixed(1)}%).</p>
   `;
 }
 
@@ -635,8 +625,6 @@ renderYoYSummary("augYoyTable","augYoyNarrative",YOY_SUM_AUG,"Aug 2025","Aug 202
 renderFullYoyDetail("augYoyDetailTable", FULL_YOY_AUG, "Aug 2025", "Aug 2026");
 renderBudget();
 renderOpps();
-renderYoYSummary("yoyTable","yoyNarrative",YOY_SUM_JUL,"Jul 2025","Jul 2026",julYoYNarrative);
-renderFullYoyDetail("yoyDetailTable", FULL_YOY_JUL, "Jul 2025", "Jul 2026");
 renderPnlDetail();
 
 window.addEventListener("resize", ()=>{ drawRevNI(); drawSingleSeries("chartCash","cash","var(--brand)",{label:"Cash on hand"}); drawSingleSeries("chartAP","ap","var(--accent)",{label:"Accounts payable"}); drawExpenses(); });
