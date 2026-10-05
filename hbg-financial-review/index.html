@@ -157,6 +157,17 @@
     .hero-inner{flex-direction:column;align-items:flex-start;gap:14px;}
     .hero-period{text-align:left;}
   }
+  .note{background:#FFF6E5;border:1px solid #F0D9A8;border-left:4px solid var(--accent);border-radius:10px;padding:16px 20px;margin-top:22px;font-size:13.5px;line-height:1.55;}
+  .note p{margin:0 0 8px;} .note p:last-child{margin-bottom:0;} .note strong{color:var(--brand-dark);}
+  .two-eq{grid-template-columns:1fr 1fr;}
+  .two-eq > div{min-width:0;}
+  table.opp th{text-align:left;}
+  table.opp td{text-align:left;vertical-align:top;font-size:13px;line-height:1.5;}
+  table.opp td.item{padding-top:12px;padding-bottom:12px;}
+  .tabbar-inner{overflow-x:auto;white-space:nowrap;scrollbar-width:thin;}
+  .tab-btn{flex:0 0 auto;}
+  @media (max-width:820px){ .two-eq{grid-template-columns:1fr;} .tab-btn{margin-right:14px;font-size:13px;} .wrap{padding:0 16px 64px;} }
+
 </style>
 </head>
 <body>
@@ -181,10 +192,12 @@
 <div class="tabbar">
   <div class="tabbar-inner">
     <button class="tab-btn active" data-tab="overview">YTD Overview</button>
-    <button class="tab-btn" data-tab="julyvsprior">July Actual vs. Prior</button>
-    <button class="tab-btn" data-tab="detail">July &amp; August Detail</button>
     <button class="tab-btn" data-tab="augbudget">August Actual vs. Budget</button>
+    <button class="tab-btn" data-tab="augvsprior">August Actual vs. Prior Year</button>
     <button class="tab-btn" data-tab="budget">YTD vs. Budget</button>
+    <button class="tab-btn" data-tab="opps">Profit Opportunities</button>
+    <button class="tab-btn" data-tab="julyvsprior">July Actual vs. Prior Year</button>
+    <button class="tab-btn" data-tab="detail">July &amp; August Detail</button>
   </div>
 </div>
 
@@ -194,6 +207,10 @@
   <section style="margin-top:32px;">
     <div class="kpis" id="kpiRow"></div>
   </section>
+
+  <div class="note" id="dataNote">
+    <p><strong>What changed in this update.</strong> (1) <strong>August is now complete.</strong> The corrected August package records SBA-loan interest, gas &amp; electric, water &amp; sewage and janitorial, so August net income is $39,602 (16.7% margin), not the $50,345 shown previously. (2) <strong>June and July now use the restated columns from the same Jun–Aug package</strong>, which include the 5% management fee (about $12K a month) that the original June and July statements omitted — June net income moves from $52,255 to $40,139 and July from $36,926 to $24,512. (3) <strong>January–May still come from each month's own statement.</strong> April and May carry no management fee (about $21K at 5%) and later packages restated Jan–May slightly, which is why the August 31 balance sheet shows year-to-date net income of $108,853 against the $141,778 summed here; the reconciliation is on the "YTD vs. Budget" page.</p>
+  </div>
 
   <section class="narrative" id="narrative"></section>
 
@@ -213,7 +230,7 @@
 
   <section>
     <h2>Cash &amp; payables</h2>
-    <p class="section-sub">Cash on hand has nearly tripled since January while accounts payable has been steadily paid down.</p>
+    <p class="section-sub">Cash on hand has nearly tripled since January — largely funded by the $350,750 SBA loan — while accounts payable has been paid down from $168K to $94K.</p>
     <div class="two-col">
       <div class="card">
         <p class="chart-title">Cash on hand (bank accounts)</p>
@@ -233,7 +250,7 @@
     <p class="section-sub">Operating expenses by category (excludes cost of goods sold, shown separately in the table below). Each figure shows the dollar amount with its share of that month's revenue.</p>
     <div class="card">
       <p class="chart-title">Monthly operating expenses by category</p>
-      <p class="chart-sub">Payroll is the largest line every month, but has fallen from 48% of revenue in January to 30–35% since April as sales scaled. Note: August is sourced from a combined June–August export that itemizes a "Management" fee within Operations that earlier months' statements didn't separately break out, so August's Operations figure isn't perfectly apples-to-apples with Jan–Jul (see the "July &amp; August Detail" page).</p>
+      <p class="chart-sub">Payroll is the largest line every month, but has fallen from 48% of revenue in January to 31–40% since April as sales scaled. Note: June–August Operations includes the 5% management fee (about $12K a month) that the April and May statements do not carry, so Operations is not perfectly comparable across months.</p>
       <div class="legend" id="expLegend"></div>
       <div class="chart-wrap" id="chartExpenses"></div>
       <div class="table-scroll" style="margin-top:14px;">
@@ -253,8 +270,130 @@
   </section>
 
   <footer>
-    <p>Source: HBG 2 LLC monthly Profit &amp; Loss and Balance Sheet statements, January–August 2026 (unaudited, for management purposes only). Figures shown on an accrual basis as reported in each month's financial statement package; August is sourced from the June–August 2026 combined statement's own August column.</p>
+    <p>Source: HBG 2 LLC monthly Profit &amp; Loss and Balance Sheet statements, January–August 2026 (unaudited, for management purposes only). January–May are each month's own statement; June, July and August are the corrected columns of the June–August 2026 package. Balance-sheet items for January–July are as originally reported; August 31 is from the August package. Figures are on an accrual basis as reported.</p>
     <p>Prepared for Healdsburg Bar &amp; Grill ownership review · Data current as of the August 2026 close.</p>
+  </footer>
+
+</div>
+
+<div id="page-augbudget" class="page">
+
+  <section style="margin-top:32px;">
+    <h2>August 2026 vs. budget</h2>
+    <p class="section-sub">Corrected August 2026 actual performance against the August portion of the 2026 budget, by category. Variance is actual less budget; for revenue and profit lines a positive variance is favorable, while for cost lines a positive variance means spending ran ahead of budget.</p>
+    <div class="card" style="padding-bottom:6px;">
+      <div class="table-scroll">
+        <table class="yoy" id="augBudgetTable"></table>
+      </div>
+    </div>
+    <div class="narrative" id="augBudgetNarrative" style="margin-top:20px;"></div>
+  </section>
+
+  <footer>
+    <p>Source: HBG 2 LLC combined June–August 2026 Profit &amp; Loss statement (actual, August column, corrected package) and the HBG 2026 Budget workbook (budget, August column) (unaudited, for management purposes only). Budget "Net Income" is derived as Net Ordinary Income plus Net Other Income; the budget workbook's separate summary section regroups some expense categories and is not used. The "Other" line is total expenses less the six budget categories (advertising &amp; marketing and property taxes in August); the budget has no category for it.</p>
+  </footer>
+
+</div>
+
+<div id="page-augvsprior" class="page">
+
+  <section style="margin-top:32px;">
+    <h2>August 2026 vs. August 2025</h2>
+    <p class="section-sub">Actual-vs-prior-year comparison for August, using the August column of each year's June–August package. Variance and growth are 2026 less 2025; for cost lines, an increase is shown as unfavorable.</p>
+    <div class="card" style="padding-bottom:6px;">
+      <div class="table-scroll">
+        <table class="yoy" id="augYoyTable"></table>
+      </div>
+    </div>
+    <div class="narrative" id="augYoyNarrative" style="margin-top:20px;"></div>
+  </section>
+
+  <section>
+    <h2>Full P&amp;L detail — August 2026 vs. August 2025</h2>
+    <p class="section-sub">Every line item, matched by account. A dash means the account was not itemized in that year's statement (or the comparison does not apply); "n/m" means the percentage is not meaningful (for example, the prior-year amount was zero or opposite in sign).</p>
+    <div class="card" style="padding-bottom:6px;">
+      <div class="table-scroll">
+        <table class="pnl" id="augYoyDetailTable"></table>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>Source: HBG 2 LLC June–August 2026 Profit &amp; Loss (corrected package) and June–August 2025 Profit &amp; Loss (unaudited, for management purposes only). Comparability notes: August 2025 includes a $4,263 credit booked to "Uncategorized Expense (Income)" and a management fee flagged "estimated expense, no invoice received"; August 2026 has loan interest (no loan in 2025) and a property-tax line that has no 2025 counterpart. "Other" is total expenses less the six main categories. Accounts that exist in only one year are shown with a dash on the other side; accounts with no activity in either year are omitted.</p>
+  </footer>
+
+</div>
+
+<div id="page-budget" class="page">
+
+  <section style="margin-top:32px;">
+    <h2>Year-to-date vs. 2026 budget</h2>
+    <p class="section-sub">Total January–August 2026 actual performance (sum of the monthly statements used in this dashboard) against the January–August portion of the 2026 budget, by category. Variance is actual less budget; for revenue and profit lines a positive variance is favorable, while for cost lines a positive variance means spending ran ahead of budget.</p>
+    <div class="card" style="padding-bottom:6px;">
+      <div class="table-scroll">
+        <table class="yoy" id="budgetTable"></table>
+      </div>
+    </div>
+    <div class="narrative" id="budgetNarrative" style="margin-top:20px;"></div>
+  </section>
+
+  <section>
+    <h2>Tie-out to the August 31 balance sheet</h2>
+    <p class="section-sub">The balance sheet reports lower year-to-date net income than the monthly statements add up to. This bridge shows the known pieces; the rest needs a restated January–August P&amp;L from the bookkeeper.</p>
+    <div class="card" style="padding-bottom:6px;">
+      <div class="table-scroll">
+        <table class="yoy" id="tieoutTable"></table>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>Source: HBG 2 LLC January–August 2026 monthly Profit &amp; Loss statements (actual; January–May as issued, June–August from the corrected June–August package), the August 31, 2026 balance sheet, and the HBG 2026 Budget workbook (budget), summed to a year-to-date total (unaudited, for management purposes only). Budget "Net Income" is Net Ordinary Income plus Net Other Income; the workbook's separate summary section is not used. The "Other" line is total expenses less the six budget categories and has no budget. The April/May management fee is an estimate at 5% of revenue, the rate booked in every other month; restated January–May figures are from the later monthly packages' comparative columns.</p>
+  </footer>
+
+</div>
+
+<div id="page-opps" class="page">
+
+  <section style="margin-top:32px;">
+    <h2>Profit opportunities</h2>
+    <p class="section-sub">What the year's growth tells us about where more profit can come from. Sizing is illustrative and built from the figures on the other pages.</p>
+    <div class="kpis" id="oppKpis"></div>
+    <div class="narrative" id="oppIntro"></div>
+  </section>
+
+  <section>
+    <h2>Where to find more profit</h2>
+    <p class="section-sub">Seven levers, in rough order of size.</p>
+    <div class="card" style="padding-bottom:6px;">
+      <div class="table-scroll">
+        <table class="yoy opp" id="oppTable"></table>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="two-col two-eq">
+      <div>
+        <h2>Is August's margin repeatable?</h2>
+        <p class="section-sub">Reported August profit versus an illustrative run-rate, adjusting for one-time or timing items.</p>
+        <div class="card" style="padding-bottom:6px;"><div class="table-scroll"><table class="yoy" id="oppAdjTable"></table></div></div>
+      </div>
+      <div>
+        <h2>Biggest year-over-year cost increases</h2>
+        <p class="section-sub">Expense lines with the largest dollar increase, August 2026 vs. August 2025.</p>
+        <div class="card" style="padding-bottom:6px;"><div class="table-scroll"><table class="yoy" id="oppMovers"></table></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Housekeeping that protects the numbers</h2>
+    <div class="narrative" id="oppClean" style="margin-top:12px;"></div>
+  </section>
+
+  <footer>
+    <p>Sizing notes: annual revenue base is the January–August monthly average × 12. Flow-through compares June–August 2026 with June–August 2025 (net income change ÷ revenue change). Cost-to-sales ratios by beverage category use purchases ÷ sales for June–August 2026 and are not true COGS. SBA-loan rate is from the distribution-policy file in this project (prime + 2 points); verify against the loan documents. Not tax, legal or financial advice.</p>
   </footer>
 
 </div>
@@ -263,7 +402,7 @@
 
   <section style="margin-top:32px;">
     <h2>July 2026 vs. July 2025</h2>
-    <p class="section-sub">Actual-vs-prior-year comparison for July, sourced from each year's own July statement. Dollar variance and growth are current year (2026) less prior year (2025).</p>
+    <p class="section-sub">Actual-vs-prior-year comparison for July, now using the restated July column of each year's June–August package (both years include the management fee). Variance and growth are 2026 less 2025; for cost lines, an increase is shown as unfavorable.</p>
     <div class="card" style="padding-bottom:6px;">
       <div class="table-scroll">
         <table class="yoy" id="yoyTable"></table>
@@ -274,7 +413,7 @@
 
   <section>
     <h2>Full P&amp;L detail — July 2026 vs. July 2025</h2>
-    <p class="section-sub">Every line item from each year's own July statement, matched by account. A dash means that account wasn't itemized separately in that year's statement. Each line shows the dollar amount, its share of that month's revenue, the dollar variance, and % growth.</p>
+    <p class="section-sub">Every line item, matched by account. A dash means the account was not itemized in that year's statement; "n/m" means the percentage is not meaningful.</p>
     <div class="card" style="padding-bottom:6px;">
       <div class="table-scroll">
         <table class="pnl" id="yoyDetailTable"></table>
@@ -283,16 +422,15 @@
   </section>
 
   <footer>
-    <p>Source: HBG 2 LLC July 2026 Profit &amp; Loss statement and the May–July 2025 Profit &amp; Loss statement (unaudited, for management purposes only). Figures shown on an accrual basis as reported in each period's financial statement package.</p>
+    <p>Source: HBG 2 LLC June–August 2026 Profit &amp; Loss (July column) and June–August 2025 Profit &amp; Loss (July column) (unaudited, for management purposes only). This replaces the earlier July comparison, which used the original July 2026 statement (no management fee) against the original May–July 2025 statement; the July 2025 figures were also restated slightly in the later package (net income $28,403 vs. $28,674 originally).</p>
   </footer>
 
 </div>
-
 <div id="page-detail" class="page">
 
   <section style="margin-top:32px;">
     <h2>July &amp; August in detail</h2>
-    <p class="section-sub">A full line-item P&amp;L for the two most recent months, shown on their own — independent of the January–August trend on the YTD Overview page. Each line shows both the dollar amount and its share of that month's revenue.</p>
+    <p class="section-sub">A full line-item P&amp;L for the two most recent months, shown on their own — tying to the January–August trend on the YTD Overview page. Each line shows both the dollar amount and its share of that month's revenue.</p>
     <div class="card" style="padding-bottom:6px;">
       <div class="table-scroll">
         <table class="pnl" id="pnlDetailTable"></table>
@@ -301,46 +439,8 @@
   </section>
 
   <footer>
-    <p>Source: HBG 2 LLC combined June–August 2026 Profit &amp; Loss statement, using that statement's own July and August columns so every line item aligns exactly (unaudited, for management purposes only).</p>
-    <p>Note: this combined export itemizes a "Management" fee within Legal &amp; Professional Fees (nested under Operations) that the standalone monthly statements used elsewhere in this review did not separately break out. As a result, the July total expenses and net income shown on this page differ slightly from the July figures on the YTD Overview and July Actual vs. Prior pages, which are sourced from July's own standalone statement — the two are not a reconciliation error, just two different bookkeeping exports categorizing the same period slightly differently.</p>
-  </footer>
-
-</div>
-
-<div id="page-augbudget" class="page">
-
-  <section style="margin-top:32px;">
-    <h2>August 2026 vs. budget</h2>
-    <p class="section-sub">August 2026 actual performance against the August portion of the 2026 budget, by category — a single-month view alongside the year-to-date comparison on the next tab. Variance is actual less budget; for revenue and profit lines a positive variance is favorable, while for cost lines a positive variance means spending ran ahead of budget.</p>
-    <div class="card" style="padding-bottom:6px;">
-      <div class="table-scroll">
-        <table class="yoy" id="augBudgetTable"></table>
-      </div>
-    </div>
-    <div class="narrative" id="augBudgetNarrative" style="margin-top:20px;"></div>
-  </section>
-
-  <footer>
-    <p>Source: HBG 2 LLC combined June–August 2026 Profit &amp; Loss statement (actual, August column) and the HBG 2026 Budget workbook (budget, August column) (unaudited, for management purposes only). Budget "Net Income" is derived as Net Ordinary Income plus Net Other Income, consistent with how Net Income is computed elsewhere in this review — the budget workbook's own separate summary section regroups a few expense categories differently and is not used here.</p>
-  </footer>
-
-</div>
-
-<div id="page-budget" class="page">
-
-  <section style="margin-top:32px;">
-    <h2>Year-to-date vs. 2026 budget</h2>
-    <p class="section-sub">Total January–August 2026 actual performance against the January–August portion of the 2026 budget, by category. Variance is actual less budget; for revenue and profit lines a positive variance is favorable, while for cost lines a positive variance means spending ran ahead of budget.</p>
-    <div class="card" style="padding-bottom:6px;">
-      <div class="table-scroll">
-        <table class="yoy" id="budgetTable"></table>
-      </div>
-    </div>
-    <div class="narrative" id="budgetNarrative" style="margin-top:20px;"></div>
-  </section>
-
-  <footer>
-    <p>Source: HBG 2 LLC January–August 2026 monthly Profit &amp; Loss statements (actual) and the HBG 2026 Budget workbook (budget), summed to a year-to-date total (unaudited, for management purposes only). Budget "Net Income" is derived as Net Ordinary Income plus Net Other Income, on the same basis used for "Net Income" elsewhere in this review — the budget workbook's own separate summary section regroups a few expense categories differently and is not used here.</p>
+    <p>Source: HBG 2 LLC corrected June–August 2026 Profit &amp; Loss statement, using that statement's own July and August columns so every line item aligns exactly (unaudited, for management purposes only).</p>
+    <p>Note: July and August on this page tie exactly to the monthly figures on the YTD Overview page (July net income $24,512; August $39,602) because both now use this package. The management fee (5% of revenue) is itemized under Legal &amp; Professional Fees within Operations.</p>
   </footer>
 
 </div>
@@ -348,591 +448,7 @@
 
 <div class="tooltip" id="tooltip"></div>
 
-<script>
-const DATA = [{"month": "Jan", "revenue": 150275.09, "beverage_sales": 51053.48, "food_sales": 103943.45, "cogs": 42379.5, "gross_profit": 107895.59, "gp_margin": 71.8, "financial": 6387.67, "occupancy": 20326.84, "operations": 16202.53, "payroll": 72801.53, "repairs": 753, "supplies": 7652.72, "total_expenses": 123427.35, "noi": -15531.76, "net_income": -15531.76, "net_margin": -10.3, "cash": 137446.27, "cash_chg": null, "ap": 167613.73, "equity": -24733.02, "assets": 253202.22, "liabilities": 277935.24, "payroll_pct": 48.4, "cogs_pct": 28.2}, {"month": "Feb", "revenue": 163458.24, "beverage_sales": 53618.74, "food_sales": 115245, "cogs": 42625.53, "gross_profit": 120832.71, "gp_margin": 73.9, "financial": 5738.93, "occupancy": 20267.47, "operations": 17172.81, "payroll": 72262.66, "repairs": 2057.14, "supplies": 7905.17, "total_expenses": 126919.68, "noi": -6086.97, "net_income": -6086.97, "net_margin": -3.7, "cash": 106501.45, "cash_chg": -30944.82, "ap": 152153.38, "equity": -37153.91, "assets": 217590.23, "liabilities": 254744.14, "payroll_pct": 44.2, "cogs_pct": 26.1}, {"month": "Mar", "revenue": 212863.53, "beverage_sales": 66947.25, "food_sales": 152122.5, "cogs": 50047.82, "gross_profit": 162815.71, "gp_margin": 76.5, "financial": 9697.59, "occupancy": 20600.9, "operations": 18780.06, "payroll": 76135.53, "repairs": 4606.16, "supplies": 12338.09, "total_expenses": 148758.33, "noi": 14057.38, "net_income": 14057.38, "net_margin": 6.6, "cash": 159421.86, "cash_chg": 52920.41, "ap": 180848.58, "equity": -22172.15, "assets": 274004.45, "liabilities": 296176.6, "payroll_pct": 35.8, "cogs_pct": 23.5}, {"month": "Apr", "revenue": 190082.58, "beverage_sales": 59403.75, "food_sales": 136548.23, "cogs": 53710.3, "gross_profit": 136372.28, "gp_margin": 71.7, "financial": 17445.76, "occupancy": 21574.29, "operations": 8329.98, "payroll": 75037.09, "repairs": 2235.84, "supplies": 9197.92, "total_expenses": 135554.91, "noi": 817.37, "net_income": 817.37, "net_margin": 0.4, "cash": 242221.76, "cash_chg": 82799.9, "ap": 141843.02, "equity": -23572.37, "assets": 361056.62, "liabilities": 384628.99, "payroll_pct": 39.5, "cogs_pct": 28.3}, {"month": "May", "revenue": 235722.03, "beverage_sales": 75544.5, "food_sales": 167285.5, "cogs": 63414.91, "gross_profit": 172307.12, "gp_margin": 73.1, "financial": 9682.01, "occupancy": 21195.58, "operations": 9615.15, "payroll": 80280.51, "repairs": 2130.02, "supplies": 6935.49, "total_expenses": 129838.76, "noi": 42468.36, "net_income": 44269.48, "net_margin": 18.8, "cash": 277895.08, "cash_chg": 35673.32, "ap": 128222.86, "equity": 16078.63, "assets": 399433.87, "liabilities": 383355.24, "payroll_pct": 34.1, "cogs_pct": 26.9}, {"month": "Jun", "revenue": 242056.87, "beverage_sales": 76901.25, "food_sales": 171900.23, "cogs": 64353.66, "gross_profit": 177703.21, "gp_margin": 73.4, "financial": 9230.73, "occupancy": 21313.08, "operations": 10584.33, "payroll": 74171.99, "repairs": 681.65, "supplies": 8868.35, "total_expenses": 125450.13, "noi": 52253.08, "net_income": 52254.89, "net_margin": 21.6, "cash": 289938.7, "cash_chg": 12043.62, "ap": 99723.58, "equity": 6556.82, "assets": 453265.09, "liabilities": 446708.27, "payroll_pct": 30.6, "cogs_pct": 26.6}, {"month": "Jul", "revenue": 248291.82, "beverage_sales": 80498.5, "food_sales": 174465.5, "cogs": 71028.45, "gross_profit": 177263.37, "gp_margin": 71.4, "financial": 10957.88, "occupancy": 21849.01, "operations": 9704.17, "payroll": 81936.86, "repairs": 2588.72, "supplies": 12701.85, "total_expenses": 140338.49, "noi": 36924.88, "net_income": 36926.17, "net_margin": 14.9, "cash": 333820.74, "cash_chg": 43882.04, "ap": 92575.8, "equity": 43469.52, "assets": 500967.28, "liabilities": 457497.76, "payroll_pct": 33.0, "cogs_pct": 28.6}, {"month": "Aug", "revenue": 236911.59, "beverage_sales": 77249.5, "food_sales": 166445.75, "cogs": 55165.62, "gross_profit": 181745.97, "gp_margin": 76.7, "financial": 7534.38, "occupancy": 17306.69, "operations": 19908.6, "payroll": 72933.26, "repairs": 699.08, "supplies": 9252.7, "total_expenses": 131403.71, "noi": 50342.26, "net_income": 50344.53, "net_margin": 21.3, "cash": 374797.15, "cash_chg": 40976.41, "ap": 83667.84, "equity": 22456.39, "assets": 570615.09, "liabilities": 548158.7, "payroll_pct": 30.8, "cogs_pct": 23.3}]
-;
-
-const PNL_DETAIL = [{"type":"section","label":"Income"},{"type":"header","label":"Beverage Sales"},{"type":"leaf","label":"Beer","jul":18411.5,"aug":13183,"jul_pct":7.42,"aug_pct":5.56},{"type":"leaf","label":"Liquor","jul":36807,"aug":42346,"jul_pct":14.82,"aug_pct":17.87},{"type":"leaf","label":"N/A Sales","jul":8351,"aug":8161.5,"jul_pct":3.36,"aug_pct":3.44},{"type":"leaf","label":"Wine","jul":16929,"aug":13559,"jul_pct":6.82,"aug_pct":5.72},{"type":"subtotal","label":"Beverage Sales","jul":80498.5,"aug":77249.5,"jul_pct":32.42,"aug_pct":32.61},{"type":"header","label":"Food Sales"},{"type":"leaf","label":"Gross Food Sales","jul":174465.5,"aug":166445.75,"jul_pct":70.27,"aug_pct":70.26},{"type":"subtotal","label":"Food Sales","jul":174465.5,"aug":166445.75,"jul_pct":70.27,"aug_pct":70.26},{"type":"leaf","label":"Merchandise Sales","jul":125,"aug":0,"jul_pct":0.05,"aug_pct":0.0},{"type":"leaf","label":"Sales Discount","jul":-6797.18,"aug":-6783.66,"jul_pct":-2.74,"aug_pct":-2.86},{"type":"leaf","label":"Service Charge Sales","jul":0,"aug":0,"jul_pct":0.0,"aug_pct":0.0},{"type":"grandtotal","label":"Income","jul":248291.82,"aug":236911.59,"jul_pct":100.0,"aug_pct":100.0},{"type":"section","label":"Cost of Goods Sold"},{"type":"header","label":"Beverage Purchases"},{"type":"leaf","label":"Beer","jul":5093.1,"aug":3926.57,"jul_pct":2.05,"aug_pct":1.66},{"type":"leaf","label":"Liquor","jul":6494.94,"aug":2625.67,"jul_pct":2.62,"aug_pct":1.11},{"type":"leaf","label":"Non-Alch Beverages","jul":1675.86,"aug":1109.55,"jul_pct":0.67,"aug_pct":0.47},{"type":"leaf","label":"Wine","jul":3309.36,"aug":5439.1,"jul_pct":1.33,"aug_pct":2.3},{"type":"subtotal","label":"Beverage Purchases","jul":16573.26,"aug":13100.89,"jul_pct":6.67,"aug_pct":5.53},{"type":"subtotal","label":"Food Purchases","jul":54455.19,"aug":42064.73,"jul_pct":21.93,"aug_pct":17.76},{"type":"grandtotal","label":"Cost of Goods Sold","jul":71028.45,"aug":55165.62,"jul_pct":28.61,"aug_pct":23.29},{"type":"grandtotal","label":"Gross Profit","jul":177263.37,"aug":181745.97,"jul_pct":71.39,"aug_pct":76.71},{"type":"section","label":"Expenses"},{"type":"leaf","label":"Advertising & marketing","jul":600,"aug":600,"jul_pct":0.24,"aug_pct":0.25},{"type":"header","label":"Financial"},{"type":"leaf","label":"Bank Service Charges","jul":35.7,"aug":45.85,"jul_pct":0.01,"aug_pct":0.02},{"type":"leaf","label":"Cash Over/Short","jul":-220.12,"aug":-222.48,"jul_pct":-0.09,"aug_pct":-0.09},{"type":"leaf","label":"Charitable Contributions","jul":186,"aug":null,"jul_pct":0.07,"aug_pct":0},{"type":"leaf","label":"Credit Card Fees","jul":8027.35,"aug":7844.78,"jul_pct":3.23,"aug_pct":3.31},{"type":"leaf","label":"Finance Charge","jul":1.98,"aug":null,"jul_pct":0.0,"aug_pct":0},{"type":"leaf","label":"Interest on Loan","jul":1772.3,"aug":null,"jul_pct":0.71,"aug_pct":0},{"type":"leaf","label":"Liability Insurance","jul":1254.72,"aug":1254.71,"jul_pct":0.51,"aug_pct":0.53},{"type":"leaf","label":"Licenses & Permits","jul":1555,"aug":null,"jul_pct":0.63,"aug_pct":0},{"type":"leaf","label":"Sales Tax Expense","jul":-1655.05,"aug":-1388.48,"jul_pct":-0.67,"aug_pct":-0.59},{"type":"subtotal","label":"Financial","jul":10957.88,"aug":7534.38,"jul_pct":4.41,"aug_pct":3.18},{"type":"header","label":"Occupancy Costs"},{"type":"leaf","label":"Rent Expense","jul":16047.05,"aug":16047.05,"jul_pct":6.46,"aug_pct":6.77},{"type":"header","label":"Utilities"},{"type":"leaf","label":"Garbage Disposal","jul":944.48,"aug":944.48,"jul_pct":0.38,"aug_pct":0.4},{"type":"leaf","label":"Gas & Electric","jul":2356.1,"aug":null,"jul_pct":0.95,"aug_pct":0},{"type":"leaf","label":"Telephone Expense","jul":313.76,"aug":315.16,"jul_pct":0.13,"aug_pct":0.13},{"type":"leaf","label":"Water & Sewage","jul":2187.62,"aug":null,"jul_pct":0.88,"aug_pct":0},{"type":"subtotal","label":"Utilities","jul":5801.96,"aug":1259.64,"jul_pct":2.34,"aug_pct":0.53},{"type":"subtotal","label":"Occupancy Costs","jul":21849.01,"aug":17306.69,"jul_pct":8.8,"aug_pct":7.31},{"type":"header","label":"Operations"},{"type":"leaf","label":"Advertising and Promotion","jul":873.18,"aug":259.76,"jul_pct":0.35,"aug_pct":0.11},{"type":"header","label":"Computer and Internet Expenses"},{"type":"leaf","label":"Other Computer and Internet Expenses","jul":454.6,"aug":32.98,"jul_pct":0.18,"aug_pct":0.01},{"type":"leaf","label":"POS","jul":885.49,"aug":886.7,"jul_pct":0.36,"aug_pct":0.37},{"type":"subtotal","label":"Computer and Internet Expenses","jul":1340.09,"aug":919.68,"jul_pct":0.54,"aug_pct":0.39},{"type":"leaf","label":"Dues and Subscriptions","jul":1850.9,"aug":1574.58,"jul_pct":0.75,"aug_pct":0.66},{"type":"leaf","label":"Employee Appreciation","jul":null,"aug":null,"jul_pct":null,"aug_pct":null},{"type":"leaf","label":"Equipment Rental","jul":null,"aug":null,"jul_pct":null,"aug_pct":null},{"type":"leaf","label":"Janitorial Expense","jul":650,"aug":null,"jul_pct":0.26,"aug_pct":0},{"type":"header","label":"Legal & Professional Fees"},{"type":"leaf","label":"Bookkeeping","jul":3700,"aug":3700,"jul_pct":1.49,"aug_pct":1.56},{"type":"leaf","label":"Legal & Professional Fees Other","jul":null,"aug":null,"jul_pct":null,"aug_pct":null},{"type":"leaf","label":"Management","jul":12414.59,"aug":11845.58,"jul_pct":5.0,"aug_pct":5.0},{"type":"subtotal","label":"Legal & Professional Fees","jul":16114.59,"aug":15545.58,"jul_pct":6.49,"aug_pct":6.56},{"type":"leaf","label":"Meals and Entertainment","jul":22,"aug":109,"jul_pct":0.01,"aug_pct":0.05},{"type":"leaf","label":"Music","jul":0,"aug":0,"jul_pct":0.0,"aug_pct":0.0},{"type":"leaf","label":"Outside Services","jul":1268,"aug":1500,"jul_pct":0.51,"aug_pct":0.63},{"type":"subtotal","label":"Operations","jul":22118.76,"aug":19908.6,"jul_pct":8.91,"aug_pct":8.4},{"type":"header","label":"Payroll Expenses"},{"type":"leaf","label":"Employee Healthcare","jul":1385.98,"aug":3313.4,"jul_pct":0.56,"aug_pct":1.4},{"type":"header","label":"Front of House Wages"},{"type":"leaf","label":"Bartender Wages","jul":2633.78,"aug":2875.02,"jul_pct":1.06,"aug_pct":1.21},{"type":"leaf","label":"Server Wages","jul":19786.95,"aug":18032.92,"jul_pct":7.97,"aug_pct":7.61},{"type":"subtotal","label":"Front of House Wages","jul":22420.73,"aug":20907.94,"jul_pct":9.03,"aug_pct":8.83},{"type":"header","label":"Kitchen Wages"},{"type":"leaf","label":"Cook Wages","jul":22048.6,"aug":20207.71,"jul_pct":8.88,"aug_pct":8.53},{"type":"leaf","label":"Dishwasher Wages","jul":6712.79,"aug":6274.48,"jul_pct":2.7,"aug_pct":2.65},{"type":"subtotal","label":"Kitchen Wages","jul":28761.39,"aug":26482.19,"jul_pct":11.58,"aug_pct":11.18},{"type":"leaf","label":"Management Bonuses","jul":200,"aug":600,"jul_pct":0.08,"aug_pct":0.25},{"type":"leaf","label":"Management Wages","jul":17967.32,"aug":11032.45,"jul_pct":7.24,"aug_pct":4.66},{"type":"leaf","label":"Payroll Taxes","jul":9139.44,"aug":8397.8,"jul_pct":3.68,"aug_pct":3.54},{"type":"leaf","label":"Service Charges Paid","jul":null,"aug":null,"jul_pct":null,"aug_pct":null},{"type":"leaf","label":"Sick Pay","jul":1152,"aug":1432,"jul_pct":0.46,"aug_pct":0.6},{"type":"leaf","label":"Workers Comp","jul":910,"aug":767.48,"jul_pct":0.37,"aug_pct":0.32},{"type":"subtotal","label":"Payroll Expenses","jul":81936.86,"aug":72933.26,"jul_pct":33.0,"aug_pct":30.79},{"type":"header","label":"Repairs and Maintenance"},{"type":"leaf","label":"Appliances","jul":2317.12,"aug":411.96,"jul_pct":0.93,"aug_pct":0.17},{"type":"leaf","label":"Building","jul":111.6,"aug":127.12,"jul_pct":0.04,"aug_pct":0.05},{"type":"leaf","label":"Kitchen Tools","jul":160,"aug":160,"jul_pct":0.06,"aug_pct":0.07},{"type":"subtotal","label":"Repairs and Maintenance","jul":2588.72,"aug":699.08,"jul_pct":1.04,"aug_pct":0.3},{"type":"header","label":"Supplies"},{"type":"leaf","label":"Cleaning","jul":2917.34,"aug":2732.17,"jul_pct":1.17,"aug_pct":1.15},{"type":"leaf","label":"Kitchen","jul":357.51,"aug":326.58,"jul_pct":0.14,"aug_pct":0.14},{"type":"leaf","label":"Office","jul":37.03,"aug":33.2,"jul_pct":0.01,"aug_pct":0.01},{"type":"leaf","label":"Operating","jul":4627.85,"aug":5223.71,"jul_pct":1.86,"aug_pct":2.2},{"type":"leaf","label":"Paper Products","jul":889.02,"aug":414.51,"jul_pct":0.36,"aug_pct":0.17},{"type":"leaf","label":"Small Equipment & Furniture","jul":3614.56,"aug":null,"jul_pct":1.46,"aug_pct":0},{"type":"leaf","label":"Smallwares","jul":258.54,"aug":522.53,"jul_pct":0.1,"aug_pct":0.22},{"type":"leaf","label":"Smallwares","jul":null,"aug":null,"jul_pct":0,"aug_pct":0},{"type":"subtotal","label":"Smallwares","jul":258.54,"aug":522.53,"jul_pct":0.1,"aug_pct":0.22},{"type":"subtotal","label":"Supplies","jul":12701.85,"aug":9252.7,"jul_pct":5.12,"aug_pct":3.91},{"type":"header","label":"Taxes paid"},{"type":"leaf","label":"Property taxes","jul":null,"aug":3169,"jul_pct":0,"aug_pct":1.34},{"type":"subtotal","label":"Taxes paid","jul":0,"aug":3169,"jul_pct":0.0,"aug_pct":1.34},{"type":"grandtotal","label":"Expenses","jul":152753.08,"aug":131403.71,"jul_pct":61.52,"aug_pct":55.47},{"type":"grandtotal","label":"Net Operating Income","jul":24510.29,"aug":50342.26,"jul_pct":9.87,"aug_pct":21.25},{"type":"section","label":"Other Income"},{"type":"leaf","label":"Interest Income","jul":1.29,"aug":2.27,"jul_pct":0.0,"aug_pct":0.0},{"type":"grandtotal","label":"Other Income","jul":1.29,"aug":2.27,"jul_pct":0.0,"aug_pct":0.0},{"type":"section","label":"Other Expenses"},{"type":"grandtotal","label":"Net Other Income","jul":1.29,"aug":2.27,"jul_pct":0.0,"aug_pct":0.0},{"type":"grandtotal","label":"Net Income","jul":24511.58,"aug":50344.53,"jul_pct":9.87,"aug_pct":21.25}];
-
-const YOY_JULY = [{"label":"Beverage Sales","py":63545.76,"cy":80498.5,"delta":16952.74,"growth":26.7},{"label":"Food Sales","py":149652.31,"cy":174465.5,"delta":24813.19,"growth":16.6},{"label":"Total Revenue","py":206713.77,"cy":248291.82,"bold":true,"delta":41578.05,"growth":20.1},{"label":"Cost of Goods Sold","py":49094.5,"cy":71028.45,"delta":21933.95,"growth":44.7},{"label":"Gross Profit","py":157619.27,"cy":177263.37,"bold":true,"delta":19644.1,"growth":12.5},{"label":"Gross Profit Margin","py":76.25,"cy":71.4,"pct":true,"delta":-4.9},{"label":"Financial","py":7873.35,"cy":10957.88,"delta":3084.53,"growth":39.2},{"label":"Occupancy","py":19986.58,"cy":21849.01,"delta":1862.43,"growth":9.3},{"label":"Operations","py":20982.14,"cy":9704.17,"delta":-11277.97,"growth":-53.8},{"label":"Payroll","py":73946.42,"cy":81936.86,"delta":7990.44,"growth":10.8},{"label":"Repairs & Maintenance","py":619.72,"cy":2588.72,"delta":1969.0,"growth":317.7},{"label":"Supplies","py":7089.56,"cy":12701.85,"delta":5612.29,"growth":79.2},{"label":"Total Expenses","py":130497.77,"cy":140338.49,"bold":true,"delta":9840.72,"growth":7.5},{"label":"Net Operating Income","py":27121.5,"cy":36924.88,"bold":true,"delta":9803.38,"growth":36.1},{"label":"Net Income","py":28674.0,"cy":36926.17,"bold":true,"delta":8252.17,"growth":28.8},{"label":"Net Margin","py":13.87,"cy":14.9,"pct":true,"delta":1.0}];
-const FULL_YOY_DETAIL = [{"type":"section","label":"Income"},{"type":"header","label":"Beverage Sales"},{"type":"leaf","label":"Beer","py":17445.46,"py_pct":8.44,"cy":18411.5,"cy_pct":7.42,"delta":966.04,"growth":5.5},{"type":"leaf","label":"Liquor","py":23769.27,"py_pct":11.5,"cy":36807,"cy_pct":14.82,"delta":13037.73,"growth":54.9},{"type":"leaf","label":"N/A Sales","py":8216.03,"py_pct":3.97,"cy":8351,"cy_pct":3.36,"delta":134.97,"growth":1.6},{"type":"leaf","label":"Wine","py":14115,"py_pct":6.83,"cy":16929,"cy_pct":6.82,"delta":2814,"growth":19.9},{"type":"subtotal","label":"Beverage Sales","py":63545.76,"py_pct":30.74,"cy":80498.5,"cy_pct":32.42,"delta":16952.74,"growth":26.7},{"type":"header","label":"Food Sales"},{"type":"leaf","label":"Gross Food Sales","py":149652.31,"py_pct":72.4,"cy":174465.5,"cy_pct":70.27,"delta":24813.19,"growth":16.6},{"type":"leaf","label":"Merchandise Sales","py":0,"py_pct":0.0,"cy":125,"cy_pct":0.05,"delta":125,"growth":null},{"type":"leaf","label":"Sales Discount","py":-6484.3,"py_pct":-3.14,"cy":-6797.18,"cy_pct":-2.74,"delta":-312.88,"growth":4.8},{"type":"leaf","label":"Service Charge Sales","py":0,"py_pct":0.0,"cy":0,"cy_pct":0.0,"delta":0,"growth":null},{"type":"grandtotal","label":"Income","py":206713.77,"py_pct":100.0,"cy":248291.82,"cy_pct":100.0,"delta":41578.05,"growth":20.1},{"type":"section","label":"Cost of Goods Sold"},{"type":"header","label":"Beverage Purchases"},{"type":"leaf","label":"Beer","py":3105.98,"py_pct":1.5,"cy":5093.1,"cy_pct":2.05,"delta":1987.12,"growth":64.0},{"type":"leaf","label":"Liquor","py":1475.07,"py_pct":0.71,"cy":6494.94,"cy_pct":2.62,"delta":5019.87,"growth":340.3},{"type":"leaf","label":"Non-Alch Beverages","py":1103.83,"py_pct":0.53,"cy":1675.86,"cy_pct":0.67,"delta":572.03,"growth":51.8},{"type":"leaf","label":"Wine","py":3775.38,"py_pct":1.83,"cy":3309.36,"cy_pct":1.33,"delta":-466.02,"growth":-12.3},{"type":"leaf","label":"Bar Food Supplies","py":0,"py_pct":0.0,"cy":null,"cy_pct":null,"delta":null,"growth":null},{"type":"subtotal","label":"Beverage Purchases","py":9460.26,"py_pct":4.58,"cy":16573.26,"cy_pct":6.67,"delta":7113.0,"growth":75.2},{"type":"subtotal","label":"Food Purchases","py":39634.24,"py_pct":19.17,"cy":54455.19,"cy_pct":21.93,"delta":14820.95,"growth":37.4},{"type":"grandtotal","label":"Cost of Goods Sold","py":49094.5,"py_pct":23.75,"cy":71028.45,"cy_pct":28.61,"delta":21933.95,"growth":44.7},{"type":"grandtotal","label":"Gross Profit","py":157619.27,"py_pct":76.25,"cy":177263.37,"cy_pct":71.39,"delta":19644.1,"growth":12.5},{"type":"section","label":"Expenses"},{"type":"leaf","label":"Advertising & marketing","py":null,"py_pct":null,"cy":600,"cy_pct":0.24,"delta":null,"growth":null},{"type":"header","label":"Financial"},{"type":"leaf","label":"Bank Service Charges","py":51,"py_pct":0.02,"cy":35.7,"cy_pct":0.01,"delta":-15.3,"growth":-30.0},{"type":"leaf","label":"Business Licenses and Permits","py":0,"py_pct":0.0,"cy":0,"cy_pct":0.0,"delta":0,"growth":null},{"type":"leaf","label":"Cash Over/Short","py":102.52,"py_pct":0.05,"cy":-220.12,"cy_pct":-0.09,"delta":-322.64,"growth":-314.7},{"type":"leaf","label":"Charitable Contributions","py":null,"py_pct":null,"cy":186,"cy_pct":0.07,"delta":null,"growth":null},{"type":"leaf","label":"Credit Card Fees","py":6496.13,"py_pct":3.14,"cy":8027.35,"cy_pct":3.23,"delta":1531.22,"growth":23.6},{"type":"leaf","label":"Finance Charge","py":0,"py_pct":0.0,"cy":1.98,"cy_pct":0.0,"delta":1.98,"growth":null},{"type":"leaf","label":"Interest on Loan","py":null,"py_pct":null,"cy":1772.3,"cy_pct":0.71,"delta":null,"growth":null},{"type":"leaf","label":"Liability Insurance","py":1123.7,"py_pct":0.54,"cy":1254.72,"cy_pct":0.51,"delta":131.02,"growth":11.7},{"type":"leaf","label":"Licenses & Permits","py":100,"py_pct":0.05,"cy":1555,"cy_pct":0.63,"delta":1455,"growth":1455.0},{"type":"leaf","label":"Sales Tax Expense","py":0,"py_pct":0.0,"cy":-1655.05,"cy_pct":-0.67,"delta":-1655.05,"growth":null},{"type":"subtotal","label":"Financial","py":7873.35,"py_pct":3.81,"cy":10957.88,"cy_pct":4.41,"delta":3084.53,"growth":39.2},{"type":"header","label":"Occupancy Costs"},{"type":"leaf","label":"Rent Expense","py":15601.11,"py_pct":7.55,"cy":16047.05,"cy_pct":6.46,"delta":445.94,"growth":2.9},{"type":"header","label":"Utilities"},{"type":"leaf","label":"Garbage Disposal","py":917.62,"py_pct":0.44,"cy":944.48,"cy_pct":0.38,"delta":26.86,"growth":2.9},{"type":"leaf","label":"Gas & Electric","py":2320.88,"py_pct":1.12,"cy":2356.1,"cy_pct":0.95,"delta":35.22,"growth":1.5},{"type":"leaf","label":"Telephone Expense","py":103.46,"py_pct":0.05,"cy":313.76,"cy_pct":0.13,"delta":210.3,"growth":203.3},{"type":"leaf","label":"Water & Sewage","py":1043.51,"py_pct":0.5,"cy":2187.62,"cy_pct":0.88,"delta":1144.11,"growth":109.6},{"type":"subtotal","label":"Utilities","py":4385.47,"py_pct":2.12,"cy":5801.96,"cy_pct":2.34,"delta":1416.49,"growth":32.3},{"type":"subtotal","label":"Occupancy Costs","py":19986.58,"py_pct":9.67,"cy":21849.01,"cy_pct":8.8,"delta":1862.43,"growth":9.3},{"type":"header","label":"Operations"},{"type":"leaf","label":"Advertising and Promotion","py":126.06,"py_pct":0.06,"cy":873.18,"cy_pct":0.35,"delta":747.12,"growth":592.7},{"type":"header","label":"Computer and Internet Expenses"},{"type":"leaf","label":"Other Computer and Internet Expenses","py":747.41,"py_pct":0.36,"cy":454.6,"cy_pct":0.18,"delta":-292.81,"growth":-39.2},{"type":"leaf","label":"POS","py":884.51,"py_pct":0.43,"cy":885.49,"cy_pct":0.36,"delta":0.98,"growth":0.1},{"type":"subtotal","label":"Computer and Internet Expenses","py":1631.92,"py_pct":0.79,"cy":1340.09,"cy_pct":0.54,"delta":-291.83,"growth":-17.9},{"type":"leaf","label":"Dues and Subscriptions","py":1043.47,"py_pct":0.5,"cy":1850.9,"cy_pct":0.75,"delta":807.43,"growth":77.4},{"type":"leaf","label":"Employee Appreciation","py":null,"py_pct":null,"cy":0,"cy_pct":0.0,"delta":null,"growth":null},{"type":"leaf","label":"Equipment Rental","py":null,"py_pct":null,"cy":0,"cy_pct":0.0,"delta":null,"growth":null},{"type":"leaf","label":"Janitorial Expense","py":575,"py_pct":0.28,"cy":650,"cy_pct":0.26,"delta":75,"growth":13.0},{"type":"header","label":"Legal & Professional Fees"},{"type":"leaf","label":"Bookkeeping","py":3465,"py_pct":1.68,"cy":3700,"cy_pct":1.49,"delta":235,"growth":6.8},{"type":"leaf","label":"Legal & Professional Fees Other","py":2805,"py_pct":1.36,"cy":0,"cy_pct":0.0,"delta":-2805,"growth":-100.0},{"type":"leaf","label":"Management","py":10335.69,"py_pct":5.0,"cy":null,"cy_pct":null,"delta":null,"growth":null},{"type":"subtotal","label":"Legal & Professional Fees","py":16605.69,"py_pct":8.03,"cy":3700,"cy_pct":1.49,"delta":-12905.69,"growth":-77.7},{"type":"leaf","label":"Meals and Entertainment","py":null,"py_pct":null,"cy":22,"cy_pct":0.01,"delta":null,"growth":null},{"type":"leaf","label":"Music","py":0,"py_pct":0.0,"cy":0,"cy_pct":0.0,"delta":0,"growth":null},{"type":"leaf","label":"Outside Services","py":1000,"py_pct":0.48,"cy":1268,"cy_pct":0.51,"delta":268,"growth":26.8},{"type":"leaf","label":"Uniforms","py":null,"py_pct":null,"cy":0,"cy_pct":0.0,"delta":null,"growth":null},{"type":"subtotal","label":"Operations","py":20982.14,"py_pct":10.15,"cy":9704.17,"cy_pct":3.91,"delta":-11277.97,"growth":-53.8},{"type":"header","label":"Payroll Expenses"},{"type":"leaf","label":"Employee Healthcare","py":1476.1,"py_pct":0.71,"cy":1385.98,"cy_pct":0.56,"delta":-90.12,"growth":-6.1},{"type":"header","label":"Front of House Wages"},{"type":"leaf","label":"Bartender Wages","py":1580.54,"py_pct":0.76,"cy":2633.78,"cy_pct":1.06,"delta":1053.24,"growth":66.6},{"type":"leaf","label":"Server Wages","py":16084.27,"py_pct":7.78,"cy":19786.95,"cy_pct":7.97,"delta":3702.68,"growth":23.0},{"type":"subtotal","label":"Front of House Wages","py":17664.81,"py_pct":8.55,"cy":22420.73,"cy_pct":9.03,"delta":4755.92,"growth":26.9},{"type":"header","label":"Kitchen Wages"},{"type":"leaf","label":"Cook Wages","py":21078.13,"py_pct":10.2,"cy":22048.6,"cy_pct":8.88,"delta":970.47,"growth":4.6},{"type":"leaf","label":"Dishwasher Wages","py":6057.05,"py_pct":2.93,"cy":6712.79,"cy_pct":2.7,"delta":655.74,"growth":10.8},{"type":"subtotal","label":"Kitchen Wages","py":27135.18,"py_pct":13.13,"cy":28761.39,"cy_pct":11.58,"delta":1626.21,"growth":6.0},{"type":"leaf","label":"Management Bonuses","py":400,"py_pct":0.19,"cy":200,"cy_pct":0.08,"delta":-200,"growth":-50.0},{"type":"leaf","label":"Management Wages","py":17803.34,"py_pct":8.61,"cy":17967.32,"cy_pct":7.24,"delta":163.98,"growth":0.9},{"type":"leaf","label":"Payroll Taxes","py":7841.17,"py_pct":3.79,"cy":9139.44,"cy_pct":3.68,"delta":1298.27,"growth":16.6},{"type":"leaf","label":"Service Charges Paid","py":null,"py_pct":null,"cy":0,"cy_pct":0.0,"delta":null,"growth":null},{"type":"leaf","label":"Sick Pay","py":802.5,"py_pct":0.39,"cy":1152,"cy_pct":0.46,"delta":349.5,"growth":43.6},{"type":"leaf","label":"Workers Comp","py":823.32,"py_pct":0.4,"cy":910,"cy_pct":0.37,"delta":86.68,"growth":10.5},{"type":"subtotal","label":"Payroll Expenses","py":73946.42,"py_pct":35.77,"cy":81936.86,"cy_pct":33.0,"delta":7990.44,"growth":10.8},{"type":"header","label":"Repairs and Maintenance"},{"type":"leaf","label":"Appliances","py":363.83,"py_pct":0.18,"cy":2317.12,"cy_pct":0.93,"delta":1953.29,"growth":536.9},{"type":"leaf","label":"Building","py":95.89,"py_pct":0.05,"cy":111.6,"cy_pct":0.04,"delta":15.71,"growth":16.4},{"type":"leaf","label":"Kitchen Tools","py":160,"py_pct":0.08,"cy":160,"cy_pct":0.06,"delta":0,"growth":0.0},{"type":"subtotal","label":"Repairs and Maintenance","py":619.72,"py_pct":0.3,"cy":2588.72,"cy_pct":1.04,"delta":1969.0,"growth":317.7},{"type":"header","label":"Supplies"},{"type":"leaf","label":"Cleaning","py":1755.75,"py_pct":0.85,"cy":2917.34,"cy_pct":1.17,"delta":1161.59,"growth":66.2},{"type":"leaf","label":"Kitchen","py":15.27,"py_pct":0.01,"cy":357.51,"cy_pct":0.14,"delta":342.24,"growth":2241.3},{"type":"leaf","label":"Office","py":36.63,"py_pct":0.02,"cy":37.03,"cy_pct":0.01,"delta":0.4,"growth":1.1},{"type":"leaf","label":"Operating","py":4300.73,"py_pct":2.08,"cy":4627.85,"cy_pct":1.86,"delta":327.12,"growth":7.6},{"type":"leaf","label":"Paper Products","py":981.18,"py_pct":0.47,"cy":889.02,"cy_pct":0.36,"delta":-92.16,"growth":-9.4},{"type":"leaf","label":"Small Equipment & Furniture","py":0,"py_pct":0.0,"cy":3614.56,"cy_pct":1.46,"delta":3614.56,"growth":null},{"type":"leaf","label":"Smallwares","py":0,"py_pct":0.0,"cy":258.54,"cy_pct":0.1,"delta":258.54,"growth":null},{"type":"subtotal","label":"Smallwares","py":0,"py_pct":0.0,"cy":258.54,"cy_pct":0.1,"delta":258.54,"growth":null},{"type":"subtotal","label":"Supplies","py":7089.56,"py_pct":3.43,"cy":12701.85,"cy_pct":5.12,"delta":5612.29,"growth":79.2},{"type":"grandtotal","label":"Expenses","py":130497.77,"py_pct":63.13,"cy":140338.49,"cy_pct":56.52,"delta":9840.72,"growth":7.5},{"type":"grandtotal","label":"Net Operating Income","py":27121.5,"py_pct":13.12,"cy":36924.88,"cy_pct":14.87,"delta":9803.38,"growth":36.1},{"type":"section","label":"Other Income"},{"type":"leaf","label":"Interest Income","py":null,"py_pct":null,"cy":1.29,"cy_pct":0.0,"delta":null,"growth":null},{"type":"section","label":"Other Income"},{"type":"grandtotal","label":"Other Income","py":1552.5,"py_pct":0.75,"cy":1.29,"cy_pct":0.0,"delta":-1551.21,"growth":-99.9},{"type":"section","label":"Other Expenses"},{"type":"grandtotal","label":"Net Other Income","py":1552.5,"py_pct":0.75,"cy":1.29,"cy_pct":0.0,"delta":-1551.21,"growth":-99.9},{"type":"grandtotal","label":"Net Income","py":28674.0,"py_pct":13.87,"cy":36926.17,"cy_pct":14.87,"delta":8252.17,"growth":28.8}];
-
-const BUDGET_YTD = [{"label":"Beverage Sales","delta":42647.29,"growth":8.6,"budget":498569.68,"actual":541216.97},{"label":"Food Sales","delta":-40214.97,"growth":-3.3,"budget":1228171.13,"actual":1187956.16},{"label":"Total Revenue","delta":-15338.25,"growth":-0.9,"bold":true,"budget":1695000.0,"actual":1679661.75},{"label":"Cost of Goods Sold","delta":-4805.17,"growth":-1.1,"expense":true,"budget":447530.96,"actual":442725.79},{"label":"Gross Profit","delta":-10533.08,"growth":-0.8,"bold":true,"budget":1247469.04,"actual":1236935.96},{"label":"Gross Profit Margin","delta":0.0,"pct":true,"budget":73.6,"actual":73.6},{"label":"Financial","delta":3749.2,"growth":5.1,"expense":true,"budget":72925.75,"actual":76674.95},{"label":"Occupancy","delta":-3457.9,"growth":-2.1,"expense":true,"budget":167891.76,"actual":164433.86},{"label":"Operations","delta":-47276.12,"growth":-30.0,"expense":true,"budget":157573.75,"actual":110297.63},{"label":"Payroll","delta":57966.22,"growth":10.6,"expense":true,"budget":547593.21,"actual":605559.43},{"label":"Repairs & Maintenance","delta":-7447.14,"growth":-32.1,"expense":true,"budget":23198.75,"actual":15751.61},{"label":"Supplies","delta":3803.63,"growth":5.4,"expense":true,"budget":71048.66,"actual":74852.29},{"label":"Total Expenses","delta":21459.48,"growth":2.1,"bold":true,"expense":true,"budget":1040231.88,"actual":1061691.36},{"label":"Net Operating Income","delta":-31992.56,"growth":-15.4,"bold":true,"budget":207237.16,"actual":175244.6},{"label":"Net Income","delta":-13566.4,"growth":-7.1,"bold":true,"budget":190617.49,"actual":177051.09},{"label":"Net Margin","delta":-0.7,"pct":true,"budget":11.2,"actual":10.5}];
-
-const AUG_VS_BUDGET = [{"label":"Beverage Sales","delta":7920.92,"growth":11.4,"budget":69328.58,"actual":77249.5},{"label":"Food Sales","delta":-13992.26,"growth":-7.8,"budget":180438.01,"actual":166445.75},{"label":"Total Revenue","delta":-8088.41,"growth":-3.3,"bold":true,"budget":245000,"actual":236911.59},{"label":"Cost of Goods Sold","delta":-8455.57,"growth":-13.3,"expense":true,"budget":63621.19,"actual":55165.62},{"label":"Gross Profit","delta":367.16,"growth":0.2,"bold":true,"budget":181378.81,"actual":181745.97},{"label":"Gross Profit Margin","delta":2.7,"pct":true,"budget":74.0,"actual":76.7},{"label":"Financial","delta":-2116.56,"growth":-21.9,"expense":true,"budget":9650.94,"actual":7534.38},{"label":"Occupancy","delta":-3430.48,"growth":-16.5,"expense":true,"budget":20737.17,"actual":17306.69},{"label":"Operations","delta":-1483.5,"growth":-6.9,"expense":true,"budget":21392.1,"actual":19908.6},{"label":"Payroll","delta":1983.0,"growth":2.8,"expense":true,"budget":70950.26,"actual":72933.26},{"label":"Repairs & Maintenance","delta":-1910.92,"growth":-73.2,"expense":true,"budget":2610,"actual":699.08},{"label":"Supplies","delta":-1675.29,"growth":-15.3,"expense":true,"budget":10927.99,"actual":9252.7},{"label":"Total Expenses","delta":-4864.76,"growth":-3.6,"bold":true,"expense":true,"budget":136268.47,"actual":131403.71},{"label":"Net Operating Income","delta":5231.92,"growth":11.6,"bold":true,"budget":45110.34,"actual":50342.26},{"label":"Net Income","delta":7311.71,"growth":17.0,"bold":true,"budget":43032.82,"actual":50344.53},{"label":"Net Margin","delta":3.7,"pct":true,"budget":17.6,"actual":21.3}];
-
-const fmt$ = (n, compact) => {
-  if (n === null || n === undefined) return "—";
-  const sign = n < 0 ? "-" : "";
-  const abs = Math.abs(n);
-  if (compact) {
-    if (abs >= 1000000) return sign + "$" + (abs/1000000).toFixed(1) + "M";
-    if (abs >= 1000) return sign + "$" + (abs/1000).toFixed(0) + "K";
-    return sign + "$" + abs.toFixed(0);
-  }
-  return sign + "$" + abs.toLocaleString(undefined,{minimumFractionDigits:0,maximumFractionDigits:0});
-};
-const fmtPct = n => (n===null||n===undefined) ? "—" : (n>0?"+":"") + n.toFixed(1) + "%";
-
-const tooltip = document.getElementById("tooltip");
-function showTip(evt, html){
-  tooltip.innerHTML = html;
-  tooltip.classList.add("show");
-  positionTip(evt);
-}
-function positionTip(evt){
-  const pad = 14;
-  let x = evt.pageX + pad, y = evt.pageY + pad;
-  tooltip.style.left = x + "px";
-  tooltip.style.top = y + "px";
-}
-function hideTip(){ tooltip.classList.remove("show"); }
-
-/* ---------------- KPI tiles ---------------- */
-function renderKPIs(){
-  const totalRev = DATA.reduce((a,d)=>a+d.revenue,0);
-  const totalNI = DATA.reduce((a,d)=>a+d.net_income,0);
-  const firstCash = DATA[0].cash, lastCash = DATA[DATA.length-1].cash;
-  const cashDelta = (lastCash-firstCash)/firstCash*100;
-  const avgMargin = totalNI/totalRev*100;
-
-  const tiles = [
-    {label:"Total revenue (Jan–Aug)", value: fmt$(totalRev), delta: "+57.7% Jan → Aug", cls:"up"},
-    {label:"Total net income (Jan–Aug)", value: fmt$(totalNI), delta: "Loss in Jan–Feb, profitable every month since March", cls: totalNI>=0?"up":"down"},
-    {label:"Cash on hand (Aug 31)", value: fmt$(lastCash), delta: fmtPct(cashDelta) + " since January", cls: cashDelta>=0?"up":"down"},
-    {label:"Net margin (Jan–Aug blended)", value: avgMargin.toFixed(1)+"%", delta: "Peak 21.6% in June", cls: avgMargin>=0?"up":"down"},
-  ];
-  document.getElementById("kpiRow").innerHTML = tiles.map(t=>`
-    <div class="kpi">
-      <div class="label">${t.label}</div>
-      <div class="value">${t.value}</div>
-      <div class="delta ${t.cls}">${t.delta}</div>
-    </div>`).join("");
-}
-
-/* ---------------- narrative ---------------- */
-function renderNarrative(){
-  const jan = DATA[0], jul = DATA[DATA.length-1];
-  const best = DATA.reduce((a,b)=> b.net_income>a.net_income?b:a);
-  const el = document.getElementById("narrative");
-  el.innerHTML = `
-    <p><strong>Revenue grew most months, with a slight pullback in August.</strong> Total revenue rose from ${fmt$(jan.revenue)} in January to ${fmt$(jul.revenue)} in August — a 57.7% increase — with food and beverage sales scaling roughly in step through the summer. Growth was steepest between February and March (+${fmtPct(((DATA[2].revenue-DATA[1].revenue)/DATA[1].revenue*100))}) and revenue has held above $190K every month since April, though August eased 4.6% from July's $248,292 peak as the summer season wound down.</p>
-    <p><strong>Profitability turned the corner in March.</strong> HBG ran an operating loss in January and February (down ${fmt$(Math.abs(jan.net_income))} and ${fmt$(Math.abs(DATA[1].net_income))} respectively) as fixed costs outran a slower start to the year. From March onward the business has posted a profit every month, peaking at ${fmt$(best.net_income)} in ${best.month} on a ${best.net_margin}% net margin.</p>
-    <p><strong>Payroll leverage is the main driver.</strong> Payroll expense stayed roughly flat in dollar terms (~$72K–$82K/month) while revenue grew, so payroll fell from 48% of revenue in January to 30–35% from April on — the single biggest swing behind the return to profitability. Cost of goods sold has stayed in a tighter 23–29% band throughout.</p>
-    <p><strong>Cash and payables both moved in the business's favor.</strong> Cash on hand nearly tripled, from ${fmt$(jan.cash)} at the end of January to ${fmt$(jul.cash)} at the end of August, while accounts payable was paid down from ${fmt$(jan.ap)} to ${fmt$(jul.ap)} over the same stretch — a healthier working-capital position heading into the back half of the year.</p>
-  `;
-}
-
-/* ---------------- shared chart helpers ---------------- */
-function niceMax(v){
-  if (v<=0) return 10;
-  const p = Math.pow(10, Math.floor(Math.log10(v)));
-  const n = v/p;
-  let f;
-  if (n<=1) f=1; else if (n<=2) f=2; else if (n<=2.5) f=2.5; else if (n<=5) f=5; else f=10;
-  return f*p;
-}
-function niceMin(v){
-  if (v>=0) return 0;
-  return -niceMax(Math.abs(v));
-}
-
-/* ---------------- Chart 1: Revenue bars + Net income line ---------------- */
-function drawRevNI(){
-  const W=1000, H=340, ML=56, MR=20, MT=16, MB=34;
-  const plotW = W-ML-MR, plotH = H-MT-MB;
-  const n = DATA.length;
-  const bandW = plotW/n;
-  const barW = Math.min(38, bandW*0.5);
-
-  const maxV = niceMax(Math.max(...DATA.map(d=>d.revenue)));
-  const minV = niceMin(Math.min(...DATA.map(d=>d.net_income), 0));
-  const y = v => MT + plotH - ( (v-minV)/(maxV-minV) )*plotH;
-  const zeroY = y(0);
-
-  let gridlines="", yticks="";
-  const steps=5;
-  for(let i=0;i<=steps;i++){
-    const v = minV + (maxV-minV)*i/steps;
-    const yy = y(v);
-    gridlines += `<line x1="${ML}" x2="${W-MR}" y1="${yy}" y2="${yy}" class="gridline"/>`;
-    yticks += `<text x="${ML-8}" y="${yy+3}" text-anchor="end" class="axis-label">${fmt$(v,true)}</text>`;
-  }
-
-  let bars="", points=[], xticks="";
-  DATA.forEach((d,i)=>{
-    const cx = ML + bandW*i + bandW/2;
-    const bx = cx - barW/2;
-    const by = y(d.revenue);
-    const bh = zeroY - by;
-    bars += `<rect x="${bx}" y="${by}" width="${barW}" height="${bh}" rx="4" fill="var(--brand)" data-i="${i}" class="bar-rev"/>`;
-    points.push([cx, y(d.net_income)]);
-    xticks += `<text x="${cx}" y="${H-10}" text-anchor="middle" class="axis-label">${d.month}</text>`;
-  });
-
-  const linePath = points.map((p,i)=> (i===0?"M":"L")+p[0].toFixed(1)+","+p[1].toFixed(1)).join(" ");
-  let dots="";
-  points.forEach((p,i)=>{
-    dots += `<circle cx="${p[0]}" cy="${p[1]}" r="5" fill="var(--brand-ink)" stroke="var(--paper)" stroke-width="2" data-i="${i}" class="dot-ni"/>`;
-  });
-
-  const svg = `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet">
-    ${gridlines}
-    <line x1="${ML}" x2="${W-MR}" y1="${zeroY}" y2="${zeroY}" stroke="var(--muted)" stroke-width="1"/>
-    ${bars}
-    <path d="${linePath}" fill="none" stroke="var(--brand-ink)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
-    ${dots}
-    ${yticks}
-    ${xticks}
-  </svg>`;
-  const wrap = document.getElementById("chartRevNI");
-  wrap.innerHTML = svg;
-  const svgEl = wrap.querySelector("svg");
-
-  function hit(i,evt){
-    const d = DATA[i];
-    showTip(evt, `<b>${d.month} 2026</b><br>Revenue: ${fmt$(d.revenue)}<br>Net income: ${fmt$(d.net_income)} (${d.net_margin}%)`);
-  }
-  svgEl.querySelectorAll(".bar-rev").forEach(el=>{
-    el.addEventListener("mousemove", e=>hit(+el.dataset.i, e));
-    el.addEventListener("mouseleave", hideTip);
-  });
-  svgEl.querySelectorAll(".dot-ni").forEach(el=>{
-    el.addEventListener("mousemove", e=>hit(+el.dataset.i, e));
-    el.addEventListener("mouseleave", hideTip);
-  });
-}
-
-/* ---------------- generic single-series area/bar chart ---------------- */
-function drawSingleSeries(containerId, key, color, opts){
-  opts = opts || {};
-  const W=470, H=260, ML=54, MR=16, MT=14, MB=30;
-  const plotW = W-ML-MR, plotH = H-MT-MB;
-  const n = DATA.length;
-  const bandW = plotW/n;
-  const vals = DATA.map(d=>d[key]);
-  const maxV = niceMax(Math.max(...vals));
-  const minV = 0;
-  const y = v => MT + plotH - ((v-minV)/(maxV-minV))*plotH;
-
-  let gridlines="", yticks="";
-  const steps=4;
-  for(let i=0;i<=steps;i++){
-    const v = minV + (maxV-minV)*i/steps;
-    const yy=y(v);
-    gridlines += `<line x1="${ML}" x2="${W-MR}" y1="${yy}" y2="${yy}" class="gridline"/>`;
-    yticks += `<text x="${ML-8}" y="${yy+3}" text-anchor="end" class="axis-label">${fmt$(v,true)}</text>`;
-  }
-
-  let points=[], xticks="";
-  DATA.forEach((d,i)=>{
-    const cx = ML + bandW*i + bandW/2;
-    points.push([cx, y(d[key])]);
-    xticks += `<text x="${cx}" y="${H-8}" text-anchor="middle" class="axis-label">${d.month}</text>`;
-  });
-  const zeroY = y(0);
-  const areaPath = "M"+ML+","+zeroY+" " + points.map(p=>"L"+p[0].toFixed(1)+","+p[1].toFixed(1)).join(" ") + ` L${ML+plotW},${zeroY} Z`;
-  const linePath = points.map((p,i)=> (i===0?"M":"L")+p[0].toFixed(1)+","+p[1].toFixed(1)).join(" ");
-  let dots="";
-  points.forEach((p,i)=>{ dots += `<circle cx="${p[0]}" cy="${p[1]}" r="4.5" fill="${color}" stroke="var(--paper)" stroke-width="2" data-i="${i}" class="dot-${containerId}"/>`; });
-
-  document.getElementById(containerId).innerHTML = `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet">
-    ${gridlines}
-    <path d="${areaPath}" fill="${color}" opacity="0.10"/>
-    <path d="${linePath}" fill="none" stroke="${color}" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
-    ${dots}
-    ${yticks}
-    ${xticks}
-  </svg>`;
-  const svgEl = document.getElementById(containerId).querySelector("svg");
-  svgEl.querySelectorAll(`.dot-${containerId}`).forEach(el=>{
-    el.addEventListener("mousemove", e=>{
-      const d = DATA[+el.dataset.i];
-      const label = opts.label || key;
-      showTip(e, `<b>${d.month} 2026</b><br>${label}: ${fmt$(d[key])}`);
-    });
-    el.addEventListener("mouseleave", hideTip);
-  });
-}
-
-/* ---------------- stacked expense chart ---------------- */
-const EXPENSE_SERIES = [
-  {key:"financial", label:"Financial", color:"var(--s1)"},
-  {key:"occupancy", label:"Occupancy", color:"var(--s2)"},
-  {key:"operations", label:"Operations", color:"var(--s3)"},
-  {key:"payroll", label:"Payroll", color:"var(--s4)"},
-  {key:"repairs", label:"Repairs & maintenance", color:"var(--s5)"},
-  {key:"supplies", label:"Supplies", color:"var(--s6)"},
-];
-
-function renderExpLegend(){
-  document.getElementById("expLegend").innerHTML = EXPENSE_SERIES.map(s=>
-    `<span class="legend-item"><span class="swatch" style="background:${s.color};"></span>${s.label}</span>`).join("");
-}
-
-function drawExpenses(){
-  const W=1000, H=360, ML=56, MR=20, MT=16, MB=34;
-  const plotW = W-ML-MR, plotH = H-MT-MB;
-  const n = DATA.length;
-  const bandW = plotW/n;
-  const barW = Math.min(52, bandW*0.6);
-  const gap = 2;
-
-  const totals = DATA.map(d=> EXPENSE_SERIES.reduce((a,s)=>a+d[s.key],0));
-  const maxV = niceMax(Math.max(...totals));
-  const y = v => MT + plotH - (v/maxV)*plotH;
-  const zeroY = y(0);
-
-  let gridlines="", yticks="";
-  const steps=5;
-  for(let i=0;i<=steps;i++){
-    const v = maxV*i/steps;
-    const yy=y(v);
-    gridlines += `<line x1="${ML}" x2="${W-MR}" y1="${yy}" y2="${yy}" class="gridline"/>`;
-    yticks += `<text x="${ML-8}" y="${yy+3}" text-anchor="end" class="axis-label">${fmt$(v,true)}</text>`;
-  }
-
-  let bars="", xticks="";
-  DATA.forEach((d,i)=>{
-    const cx = ML + bandW*i + bandW/2;
-    const bx = cx - barW/2;
-    let cursorY = zeroY;
-    EXPENSE_SERIES.forEach((s,si)=>{
-      const val = d[s.key];
-      const segH = (val/maxV)*plotH;
-      const topY = cursorY - segH;
-      const isTop = si === EXPENSE_SERIES.length-1;
-      bars += `<rect x="${bx}" y="${topY+ (si>0?gap:0)}" width="${barW}" height="${Math.max(segH-(si>0?gap:0),0)}"
-        rx="${isTop?4:0}" fill="${s.color}" data-i="${i}" data-s="${si}" class="exp-seg"/>`;
-      cursorY = topY;
-    });
-    xticks += `<text x="${cx}" y="${H-10}" text-anchor="middle" class="axis-label">${d.month}</text>`;
-  });
-
-  document.getElementById("chartExpenses").innerHTML = `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet">
-    ${gridlines}
-    <line x1="${ML}" x2="${W-MR}" y1="${zeroY}" y2="${zeroY}" stroke="var(--muted)" stroke-width="1"/>
-    ${bars}
-    ${yticks}
-    ${xticks}
-  </svg>`;
-
-  const svgEl = document.getElementById("chartExpenses").querySelector("svg");
-  svgEl.querySelectorAll(".exp-seg").forEach(el=>{
-    el.addEventListener("mousemove", e=>{
-      const i = +el.dataset.i, si = +el.dataset.s;
-      const d = DATA[i], s = EXPENSE_SERIES[si];
-      showTip(e, `<b>${d.month} 2026 — ${s.label}</b><br>${fmt$(d[s.key])} (${(d[s.key]/d.revenue*100).toFixed(1)}% of revenue)`);
-    });
-    el.addEventListener("mouseleave", hideTip);
-  });
-}
-
-/* ---------------- expense breakdown table (contrast relief for the stacked chart) ---------------- */
-function cellPct(val, revenue){
-  return `${fmt$(val)} <span style="color:var(--muted);font-size:11px;">(${(val/revenue*100).toFixed(1)}%)</span>`;
-}
-function renderExpenseTable(){
-  const thead = `<thead><tr><th>Month</th>${EXPENSE_SERIES.map(s=>`<th>${s.label}</th>`).join("")}<th>Total opex</th></tr></thead>`;
-  const rows = DATA.map(d=>`<tr><td>${d.month}</td>${EXPENSE_SERIES.map(s=>`<td>${cellPct(d[s.key], d.revenue)}</td>`).join("")}<td>${cellPct(d.total_expenses, d.revenue)}</td></tr>`).join("");
-  document.getElementById("expenseTable").innerHTML = thead + `<tbody>${rows}</tbody>`;
-  const note = document.createElement("p");
-  note.className = "chart-sub";
-  note.style.marginTop = "8px";
-  note.textContent = "Figures show the dollar amount with its share of that month's revenue in parentheses.";
-  const table = document.getElementById("expenseTable");
-  if (!table.nextElementSibling || !table.nextElementSibling.classList.contains("pct-note")) {
-    note.classList.add("pct-note");
-    table.parentElement.appendChild(note);
-  }
-}
-
-/* ---------------- July/August detailed P&L ---------------- */
-function renderPnlDetail(){
-  const skipSections = new Set(["Other Income","Other Expenses"]);
-  const rows = PNL_DETAIL.filter(r => !(r.type==="section" && skipSections.has(r.label)));
-
-  function deltaCell(jul, aug){
-    if (jul===null || aug===null || jul===undefined || aug===undefined) return `<td class="dash">—</td>`;
-    const d = aug - jul;
-    const cls = d>0 ? "pos" : (d<0 ? "neg" : "");
-    const sign = d>0 ? "+" : "";
-    return `<td class="${cls}">${sign}${fmt$(d)}</td>`;
-  }
-  function moneyCell(v){ return v===null||v===undefined ? `<td class="dash">—</td>` : `<td>${fmt$(v)}</td>`; }
-  function pctCell(v){ return v===null||v===undefined ? `<td class="dash">—</td>` : `<td>${v.toFixed(1)}%</td>`; }
-
-  const body = rows.map(r=>{
-    if (r.type==="section"){
-      return `<tr class="pnl-section"><td colspan="6">${r.label}</td></tr>`;
-    }
-    if (r.type==="header"){
-      return `<tr class="pnl-header"><td class="item">${r.label}</td><td class="dash">—</td><td class="dash">—</td><td class="dash">—</td><td class="dash">—</td><td class="dash">—</td></tr>`;
-    }
-    const rowClass = r.type==="grandtotal" ? "pnl-grandtotal" : (r.type==="subtotal" ? "pnl-subtotal" : "pnl-leaf");
-    return `<tr class="${rowClass}"><td class="item">${r.label}</td>${moneyCell(r.jul)}${pctCell(r.jul_pct)}${moneyCell(r.aug)}${pctCell(r.aug_pct)}${deltaCell(r.jul, r.aug)}</tr>`;
-  }).join("");
-
-  const thead = `<thead><tr>
-    <th>Line item</th>
-    <th>Jul 2026</th><th>% of rev.</th>
-    <th>Aug 2026</th><th>% of rev.</th>
-    <th>Jul → Aug Δ</th>
-  </tr></thead>`;
-
-  document.getElementById("pnlDetailTable").innerHTML = thead + `<tbody>${body}</tbody>`;
-}
-
-/* ---------------- July YoY comparison ---------------- */
-function renderYoY(){
-  function deltaCell(r){
-    const cls = r.delta>0 ? "pos" : (r.delta<0 ? "neg" : "");
-    const sign = r.delta>0 ? "+" : "";
-    const val = r.pct ? `${sign}${r.delta.toFixed(1)} pts` : `${sign}${fmt$(r.delta)}`;
-    return `<td class="${cls}">${val}</td>`;
-  }
-  function growthCell(r){
-    if (r.pct) return `<td class="dash">—</td>`;
-    const cls = r.growth>0 ? "pos" : (r.growth<0 ? "neg" : "");
-    const sign = r.growth>0 ? "+" : "";
-    return `<td class="${cls}">${sign}${r.growth.toFixed(1)}%</td>`;
-  }
-  const rows = YOY_JULY.map(r=>{
-    const cyv = r.pct ? r.cy.toFixed(1)+"%" : fmt$(r.cy);
-    const pyv = r.pct ? r.py.toFixed(1)+"%" : fmt$(r.py);
-    return `<tr class="${r.bold?"yoy-bold":""}"><td class="item">${r.label}</td><td>${pyv}</td><td>${cyv}</td>${deltaCell(r)}${growthCell(r)}</tr>`;
-  }).join("");
-  const thead = `<thead><tr>
-    <th>Category</th>
-    <th>Jul 2025</th><th>Jul 2026</th>
-    <th>Variance</th><th>Growth</th>
-  </tr></thead>`;
-  document.getElementById("yoyTable").innerHTML = thead + `<tbody>${rows}</tbody>`;
-
-  const rev = YOY_JULY.find(r=>r.label==="Total Revenue");
-  const cogs = YOY_JULY.find(r=>r.label==="Cost of Goods Sold");
-  const gpm = YOY_JULY.find(r=>r.label==="Gross Profit Margin");
-  const opex = YOY_JULY.find(r=>r.label==="Total Expenses");
-  const ops = YOY_JULY.find(r=>r.label==="Operations");
-  const repairs = YOY_JULY.find(r=>r.label==="Repairs & Maintenance");
-  const ni = YOY_JULY.find(r=>r.label==="Net Income");
-  const nm = YOY_JULY.find(r=>r.label==="Net Margin");
-  document.getElementById("yoyNarrative").innerHTML = `
-    <p><strong>Revenue grew 20% year over year.</strong> July 2026 revenue of ${fmt$(rev.cy)} was up ${fmt$(rev.delta)} (+${rev.growth.toFixed(1)}%) from ${fmt$(rev.py)} in July 2025, with both food and beverage sales growing double digits.</p>
-    <p><strong>Cost of goods sold grew faster than revenue, compressing gross margin.</strong> COGS rose ${fmt$(cogs.delta)} (+${cogs.growth.toFixed(1)}%) year over year — more than double the rate of revenue growth — pulling gross profit margin down ${Math.abs(gpm.delta).toFixed(1)} points, from ${gpm.py.toFixed(1)}% to ${gpm.cy.toFixed(1)}%.</p>
-    <p><strong>Operating expenses stayed well controlled, offsetting most of that pressure.</strong> Total opex grew only +${opex.growth.toFixed(1)}% versus +${rev.growth.toFixed(1)}% revenue growth, helped by Operations costs falling ${Math.abs(ops.growth).toFixed(1)}% year over year. The one exception was Repairs &amp; Maintenance, up ${fmt$(repairs.delta)} (+${repairs.growth.toFixed(1)}%) — a small dollar base driven by one-off appliance and equipment repairs that eased back down again in August (see the "July &amp; August Detail" page), and itemized below.</p>
-    <p><strong>Net income grew faster than revenue.</strong> July 2026 net income of ${fmt$(ni.cy)} was up ${fmt$(ni.delta)} (+${ni.growth.toFixed(1)}%) from ${fmt$(ni.py)} a year earlier, and net margin improved ${nm.delta.toFixed(1)} points to ${nm.cy.toFixed(1)}%, as disciplined cost control below the gross-profit line more than made up for the COGS-driven margin compression above it.</p>
-  `;
-}
-
-/* ---------------- YTD actual vs. 2026 budget ---------------- */
-function renderBudget(){
-  // Favorable/unfavorable depends on row type: for revenue & profit rows a positive
-  // variance (actual above budget) is favorable; for expense rows it's the reverse
-  // (actual above budget = overspend = unfavorable).
-  function favorable(r, v){
-    if (v === 0 || v === null || v === undefined) return "";
-    const aboveBudget = v > 0;
-    const good = r.expense ? !aboveBudget : aboveBudget;
-    return good ? "pos" : "neg";
-  }
-  function deltaCell(r){
-    const cls = favorable(r, r.delta);
-    const sign = r.delta>0 ? "+" : "";
-    const val = r.pct ? `${sign}${r.delta.toFixed(1)} pts` : `${sign}${fmt$(r.delta)}`;
-    return `<td class="${cls}">${val}</td>`;
-  }
-  function growthCell(r){
-    if (r.pct) return `<td class="dash">—</td>`;
-    const cls = favorable(r, r.growth);
-    const sign = r.growth>0 ? "+" : "";
-    return `<td class="${cls}">${sign}${r.growth.toFixed(1)}%</td>`;
-  }
-  const rows = BUDGET_YTD.map(r=>{
-    const av = r.pct ? r.actual.toFixed(1)+"%" : fmt$(r.actual);
-    const bv = r.pct ? r.budget.toFixed(1)+"%" : fmt$(r.budget);
-    return `<tr class="${r.bold?"yoy-bold":""}"><td class="item">${r.label}</td><td>${bv}</td><td>${av}</td>${deltaCell(r)}${growthCell(r)}</tr>`;
-  }).join("");
-  const thead = `<thead><tr>
-    <th>Category</th>
-    <th>YTD Budget</th><th>YTD Actual</th>
-    <th>Variance</th><th>Variance %</th>
-  </tr></thead>`;
-  document.getElementById("budgetTable").innerHTML = thead + `<tbody>${rows}</tbody>`;
-
-  const find = label => BUDGET_YTD.find(r=>r.label===label);
-  const rev = find("Total Revenue"), bev = find("Beverage Sales"), food = find("Food Sales");
-  const cogs = find("Cost of Goods Sold"), gp = find("Gross Profit"), gpm = find("Gross Profit Margin");
-  const payroll = find("Payroll"), fin = find("Financial"), sup = find("Supplies");
-  const ops = find("Operations"), rep = find("Repairs & Maintenance");
-  const occ = find("Occupancy"), totex = find("Total Expenses");
-  const noi = find("Net Operating Income"), ni = find("Net Income"), nm = find("Net Margin");
-
-  document.getElementById("budgetNarrative").innerHTML = `
-    <p><strong>Revenue is essentially on plan, at $${Math.abs(rev.delta).toLocaleString(undefined,{maximumFractionDigits:0})} below budget (${rev.growth}%) through August.</strong> Total revenue of ${fmt$(rev.actual)} against a ${fmt$(rev.budget)} year-to-date budget masks an offsetting mix shift underneath: beverage sales are running ${fmt$(bev.delta)} (+${bev.growth}%) ahead of budget, while food sales are ${fmt$(Math.abs(food.delta))} (${food.growth}%) behind — together nearly cancelling out at the top line.</p>
-    <p><strong>Gross margin is now running essentially in line with plan, and cost of goods sold is the reason why.</strong> Cost of goods sold came in ${fmt$(Math.abs(cogs.delta))} (${cogs.growth}%) under its year-to-date budget — a turnaround from earlier months, driven largely by August's favorable COGS — lifting gross profit margin to ${gpm.actual.toFixed(1)}% against a budgeted ${gpm.budget.toFixed(1)}%, on ${fmt$(gp.actual)} of actual gross profit against ${fmt$(gp.budget)} budgeted.</p>
-    <p><strong>Payroll is the largest unfavorable variance in the P&amp;L, and the main driver of the shortfall below the gross-profit line.</strong> Actual payroll of ${fmt$(payroll.actual)} is running ${fmt$(payroll.delta)} (+${payroll.growth}%) over the ${fmt$(payroll.budget)} year-to-date budget. Financial (+${fmt$(fin.delta)}, +${fin.growth}%) and Supplies (+${fmt$(sup.delta)}, +${sup.growth}%) are also running over budget, though on a much smaller dollar base, while Occupancy has moved the other way and is now running ${fmt$(Math.abs(occ.delta))} (${occ.growth}%) under budget.</p>
-    <p><strong>Operations and Repairs &amp; Maintenance are the two categories running furthest under budget</strong> — Operations at ${fmt$(ops.actual)} against a ${fmt$(ops.budget)} budget (${fmt$(ops.delta)}, ${ops.growth}%), and Repairs &amp; Maintenance at ${fmt$(rep.actual)} against ${fmt$(rep.budget)} (${fmt$(rep.delta)}, ${rep.growth}%). Given the differences in account grouping seen elsewhere between HBG's monthly bookkeeping exports and this budget template, it's worth confirming with the bookkeeper that both files bucket the same accounts under "Operations" before treating the full size of that favorable variance as real savings — but even a partial confirmation would still leave it as a genuine offset to the payroll overage. Combined, total expenses of ${fmt$(totex.actual)} came in ${fmt$(totex.delta)} (+${totex.growth}%) over the ${fmt$(totex.budget)} year-to-date budget.</p>
-    <p><strong>Net operating income and net income are both running behind budget, driven almost entirely by payroll.</strong> Net operating income of ${fmt$(noi.actual)} is ${fmt$(Math.abs(noi.delta))} (${noi.growth}%) below the ${fmt$(noi.budget)} budget. Net income of ${fmt$(ni.actual)} is ${fmt$(Math.abs(ni.delta))} (${ni.growth}%) below the ${fmt$(ni.budget)} year-to-date budget, and net margin of ${nm.actual.toFixed(1)}% is running ${Math.abs(nm.delta).toFixed(1)} points below the budgeted ${nm.budget.toFixed(1)}%. August itself ran well ahead of plan on nearly every measure (see the "August Actual vs. Budget" page) and narrowed this year-to-date gap; closing what remains for the rest of the year still points most directly at payroll as the category to manage.</p>
-  `;
-}
-
-/* ---------------- August actual vs. budget (single month) ---------------- */
-function renderBudgetAug(){
-  function favorable(r, v){
-    if (v === 0 || v === null || v === undefined) return "";
-    const aboveBudget = v > 0;
-    const good = r.expense ? !aboveBudget : aboveBudget;
-    return good ? "pos" : "neg";
-  }
-  function deltaCell(r){
-    const cls = favorable(r, r.delta);
-    const sign = r.delta>0 ? "+" : "";
-    const val = r.pct ? `${sign}${r.delta.toFixed(1)} pts` : `${sign}${fmt$(r.delta)}`;
-    return `<td class="${cls}">${val}</td>`;
-  }
-  function growthCell(r){
-    if (r.pct) return `<td class="dash">—</td>`;
-    const cls = favorable(r, r.growth);
-    const sign = r.growth>0 ? "+" : "";
-    return `<td class="${cls}">${sign}${r.growth.toFixed(1)}%</td>`;
-  }
-  const rows = AUG_VS_BUDGET.map(r=>{
-    const av = r.pct ? r.actual.toFixed(1)+"%" : fmt$(r.actual);
-    const bv = r.pct ? r.budget.toFixed(1)+"%" : fmt$(r.budget);
-    return `<tr class="${r.bold?"yoy-bold":""}"><td class="item">${r.label}</td><td>${bv}</td><td>${av}</td>${deltaCell(r)}${growthCell(r)}</tr>`;
-  }).join("");
-  const thead = `<thead><tr>
-    <th>Category</th>
-    <th>Aug Budget</th><th>Aug Actual</th>
-    <th>Variance</th><th>Variance %</th>
-  </tr></thead>`;
-  document.getElementById("augBudgetTable").innerHTML = thead + `<tbody>${rows}</tbody>`;
-
-  const find = label => AUG_VS_BUDGET.find(r=>r.label===label);
-  const rev = find("Total Revenue"), bev = find("Beverage Sales"), food = find("Food Sales");
-  const cogs = find("Cost of Goods Sold"), gp = find("Gross Profit"), gpm = find("Gross Profit Margin");
-  const payroll = find("Payroll"), fin = find("Financial"), sup = find("Supplies");
-  const ops = find("Operations"), rep = find("Repairs & Maintenance");
-  const occ = find("Occupancy"), totex = find("Total Expenses");
-  const noi = find("Net Operating Income"), ni = find("Net Income"), nm = find("Net Margin");
-
-  document.getElementById("augBudgetNarrative").innerHTML = `
-    <p><strong>August revenue came in essentially on plan, ${fmt$(Math.abs(rev.delta))} (${rev.growth}%) below its August budget.</strong> As with the year-to-date trend, an offsetting mix shift sits underneath the modest topline miss: beverage sales ran ${fmt$(bev.delta)} (+${bev.growth}%) ahead of budget, while food sales were ${fmt$(Math.abs(food.delta))} (${food.growth}%) behind.</p>
-    <p><strong>Gross margin ran well ahead of plan in August.</strong> Cost of goods sold came in ${fmt$(Math.abs(cogs.delta))} (${cogs.growth}%) under its August budget — the most favorable COGS variance of any month this year — lifting gross profit margin to ${gpm.actual.toFixed(1)}% against a budgeted ${gpm.budget.toFixed(1)}%, a ${Math.abs(gpm.delta).toFixed(1)}-point beat on ${fmt$(gp.actual)} of actual gross profit versus ${fmt$(gp.budget)} budgeted.</p>
-    <p><strong>Payroll was the only expense category to run over budget in August, and by a much smaller margin than the year-to-date average.</strong> Actual payroll of ${fmt$(payroll.actual)} was ${fmt$(payroll.delta)} (+${payroll.growth}%) over the ${fmt$(payroll.budget)} budget, versus +10.6% over budget cumulatively through August. Financial (${fmt$(fin.delta)}, ${fin.growth}%), Supplies (${fmt$(sup.delta)}, ${sup.growth}%), and Occupancy (${fmt$(occ.delta)}, ${occ.growth}%) all ran comfortably under budget.</p>
-    <p><strong>Operations and Repairs &amp; Maintenance again ran furthest under budget</strong> — Operations at ${fmt$(ops.actual)} against a ${fmt$(ops.budget)} budget (${fmt$(ops.delta)}, ${ops.growth}%), and Repairs &amp; Maintenance at ${fmt$(rep.actual)} against ${fmt$(rep.budget)} (${fmt$(rep.delta)}, ${rep.growth}%). As with the year-to-date comparison, the size of the Operations variance is worth sanity-checking against the chart of accounts, since the budget workbook and HBG's monthly bookkeeping exports don't always group accounts identically. Combined, total expenses of ${fmt$(totex.actual)} came in ${fmt$(Math.abs(totex.delta))} (${totex.growth}%) under the ${fmt$(totex.budget)} August budget.</p>
-    <p><strong>Both profitability measures beat budget in August, a reversal of the year-to-date shortfall.</strong> Net operating income of ${fmt$(noi.actual)} was ${fmt$(noi.delta)} (+${noi.growth}%) ahead of the ${fmt$(noi.budget)} budget, net income of ${fmt$(ni.actual)} beat the ${fmt$(ni.budget)} budget by ${fmt$(ni.delta)} (+${ni.growth}%), and net margin of ${nm.actual.toFixed(1)}% ran ${Math.abs(nm.delta).toFixed(1)} points ahead of the budgeted ${nm.budget.toFixed(1)}% — a strong month that narrowed, but did not fully close, the year-to-date gap to plan.</p>
-  `;
-}
-
-/* ---------------- July full P&L detail (2026 vs. 2025) ---------------- */
-function renderFullYoyDetail(){
-  const skipSections = new Set(["Other Income","Other Expenses"]);
-  const rows = FULL_YOY_DETAIL.filter(r => !(r.type==="section" && skipSections.has(r.label)));
-
-  function moneyCell(v){ return v===null||v===undefined ? `<td class="dash">—</td>` : `<td>${fmt$(v)}</td>`; }
-  function pctCell(v){ return v===null||v===undefined ? `<td class="dash">—</td>` : `<td>${v.toFixed(1)}%</td>`; }
-  function deltaCell(r){
-    if (r.delta===null || r.delta===undefined) return `<td class="dash">—</td>`;
-    const cls = r.delta>0 ? "pos" : (r.delta<0 ? "neg" : "");
-    const sign = r.delta>0 ? "+" : "";
-    return `<td class="${cls}">${sign}${fmt$(r.delta)}</td>`;
-  }
-  function growthCell(r){
-    if (r.growth===null || r.growth===undefined) return `<td class="dash">—</td>`;
-    const cls = r.growth>0 ? "pos" : (r.growth<0 ? "neg" : "");
-    const sign = r.growth>0 ? "+" : "";
-    return `<td class="${cls}">${sign}${r.growth.toFixed(1)}%</td>`;
-  }
-
-  const body = rows.map(r=>{
-    if (r.type==="section"){
-      return `<tr class="pnl-section"><td colspan="7">${r.label}</td></tr>`;
-    }
-    if (r.type==="header"){
-      return `<tr class="pnl-header"><td class="item">${r.label}</td><td class="dash">—</td><td class="dash">—</td><td class="dash">—</td><td class="dash">—</td><td class="dash">—</td><td class="dash">—</td></tr>`;
-    }
-    const rowClass = r.type==="grandtotal" ? "pnl-grandtotal" : (r.type==="subtotal" ? "pnl-subtotal" : "pnl-leaf");
-    return `<tr class="${rowClass}"><td class="item">${r.label}</td>${moneyCell(r.py)}${pctCell(r.py_pct)}${moneyCell(r.cy)}${pctCell(r.cy_pct)}${deltaCell(r)}${growthCell(r)}</tr>`;
-  }).join("");
-
-  const thead = `<thead><tr>
-    <th>Line item</th>
-    <th>Jul 2025</th><th>% of rev.</th>
-    <th>Jul 2026</th><th>% of rev.</th>
-    <th>Variance</th><th>Growth</th>
-  </tr></thead>`;
-
-  document.getElementById("yoyDetailTable").innerHTML = thead + `<tbody>${body}</tbody>`;
-}
-
-/* ---------------- detail table ---------------- */
-function renderTable(){
-  const cols = [
-    {label:"Month", key:"month", fmt: v=>v},
-    {label:"Revenue", key:"revenue", fmt: v=>fmt$(v)},
-    {label:"COGS", key:"cogs", fmt: v=>fmt$(v)},
-    {label:"Gross profit", key:"gross_profit", fmt: v=>fmt$(v)},
-    {label:"GP margin", key:"gp_margin", fmt: v=>v.toFixed(1)+"%"},
-    {label:"Opex", key:"total_expenses", fmt: v=>fmt$(v)},
-    {label:"Net income", key:"net_income", fmt: v=>fmt$(v), signed:true},
-    {label:"Net margin", key:"net_margin", fmt: v=>v.toFixed(1)+"%", signed:true},
-    {label:"Cash (EOM)", key:"cash", fmt: v=>fmt$(v)},
-    {label:"AP (EOM)", key:"ap", fmt: v=>fmt$(v)},
-    {label:"Total equity", key:"equity", fmt: v=>fmt$(v), signed:true},
-  ];
-  const totalRow = {
-    month:"Total / avg",
-    revenue: DATA.reduce((a,d)=>a+d.revenue,0),
-    cogs: DATA.reduce((a,d)=>a+d.cogs,0),
-    gross_profit: DATA.reduce((a,d)=>a+d.gross_profit,0),
-    gp_margin: DATA.reduce((a,d)=>a+d.gross_profit,0)/DATA.reduce((a,d)=>a+d.revenue,0)*100,
-    total_expenses: DATA.reduce((a,d)=>a+d.total_expenses,0),
-    net_income: DATA.reduce((a,d)=>a+d.net_income,0),
-    net_margin: DATA.reduce((a,d)=>a+d.net_income,0)/DATA.reduce((a,d)=>a+d.revenue,0)*100,
-    cash: DATA[DATA.length-1].cash,
-    ap: DATA[DATA.length-1].ap,
-    equity: DATA[DATA.length-1].equity,
-  };
-  function cellClass(col, v){
-    if(!col.signed) return "";
-    return v<0 ? "neg" : (v>0 ? "pos" : "");
-  }
-  const thead = `<thead><tr>${cols.map(c=>`<th>${c.label}</th>`).join("")}</tr></thead>`;
-  const rows = DATA.map(d=>`<tr>${cols.map(c=>`<td class="${cellClass(c,d[c.key])}">${c.fmt(d[c.key])}</td>`).join("")}</tr>`).join("");
-  const total = `<tr class="total-row">${cols.map(c=>`<td class="${cellClass(c,totalRow[c.key])}">${c.fmt(totalRow[c.key])}</td>`).join("")}</tr>`;
-  document.getElementById("detailTable").innerHTML = thead + `<tbody>${rows}${total}</tbody>`;
-}
-
-/* ---------------- init ---------------- */
-renderKPIs();
-renderNarrative();
-drawRevNI();
-drawSingleSeries("chartCash","cash","var(--brand)",{label:"Cash on hand"});
-drawSingleSeries("chartAP","ap","var(--accent)",{label:"Accounts payable"});
-renderExpLegend();
-drawExpenses();
-renderExpenseTable();
-renderTable();
-renderYoY();
-renderFullYoyDetail();
-renderPnlDetail();
-renderBudget();
-renderBudgetAug();
-
-window.addEventListener("resize", ()=>{ drawRevNI(); drawSingleSeries("chartCash","cash","var(--brand)",{label:"Cash on hand"}); drawSingleSeries("chartAP","ap","var(--accent)",{label:"Accounts payable"}); drawExpenses(); });
-
-/* ---------------- page tabs ---------------- */
-document.querySelectorAll(".tab-btn").forEach(btn=>{
-  btn.addEventListener("click", ()=>{
-    document.querySelectorAll(".tab-btn").forEach(b=>b.classList.remove("active"));
-    document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
-    btn.classList.add("active");
-    document.getElementById("page-"+btn.dataset.tab).classList.add("active");
-    window.scrollTo({top:0, behavior:"instant"});
-  });
-});
-</script>
+<script src="data.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
