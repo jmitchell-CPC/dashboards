@@ -111,7 +111,7 @@
   .pos{color:var(--good);}
   .table-scroll{overflow-x:auto;}
 
-  /* ---------- June/July detailed P&L ---------- */
+  /* ---------- August/September detailed P&L ---------- */
   .pnl-toggle{display:flex;gap:8px;margin-bottom:14px;}
   .pnl-toggle button{
     font-family:var(--sans);font-size:12.5px;font-weight:600;color:var(--muted);
@@ -183,7 +183,7 @@
       </div>
     </div>
     <div class="hero-period">
-      <span class="big">Jan – Aug 2026</span>
+      <span class="big">Jan – Sep 2026</span>
       Monthly financial statements · HBG 2 LLC
     </div>
   </div>
@@ -192,11 +192,11 @@
 <div class="tabbar">
   <div class="tabbar-inner">
     <button class="tab-btn active" data-tab="overview">YTD Overview</button>
-    <button class="tab-btn" data-tab="augbudget">August Actual vs. Budget</button>
-    <button class="tab-btn" data-tab="augvsprior">August Actual vs. Prior Year</button>
+    <button class="tab-btn" data-tab="sepbudget">September Actual vs. Budget</button>
+    <button class="tab-btn" data-tab="sepvsprior">September Actual vs. Prior Year</button>
     <button class="tab-btn" data-tab="budget">YTD vs. Budget</button>
     <button class="tab-btn" data-tab="opps">Profit Opportunities</button>
-    <button class="tab-btn" data-tab="detail">July &amp; August Detail</button>
+    <button class="tab-btn" data-tab="detail">August &amp; September Detail</button>
   </div>
 </div>
 
@@ -211,7 +211,7 @@
 
   <section>
     <h2>Revenue &amp; profitability</h2>
-    <p class="section-sub">Monthly total revenue against net income, January through August 2026.</p>
+    <p class="section-sub">Monthly total revenue against net income, January through September 2026.</p>
     <div class="card">
       <p class="chart-title">Revenue (bars) vs. net income (line)</p>
       <p class="chart-sub">Same dollar axis — net income crossed into positive territory in March and has stayed there since.</p>
@@ -225,7 +225,7 @@
 
   <section>
     <h2>Cash &amp; payables</h2>
-    <p class="section-sub">Cash on hand has nearly tripled since January — largely funded by the $350,750 SBA loan — while accounts payable has been paid down from $168K to $94K.</p>
+    <p class="section-sub">Cash on hand has nearly tripled since January — largely funded by the $350,000 SBA loan — while accounts payable has been paid down from $168K to $95K.</p>
     <div class="two-col">
       <div class="card">
         <p class="chart-title">Cash on hand (bank accounts)</p>
@@ -245,7 +245,7 @@
     <p class="section-sub">Operating expenses by category (excludes cost of goods sold, shown separately in the table below). Each figure shows the dollar amount with its share of that month's revenue.</p>
     <div class="card">
       <p class="chart-title">Monthly operating expenses by category</p>
-      <p class="chart-sub">Payroll is the largest line every month, but has fallen from 48% of revenue in January to 31–40% since April as sales scaled. Note: June–August Operations includes the 5% management fee (about $12K a month) that the April and May statements do not carry, so Operations is not perfectly comparable across months.</p>
+      <p class="chart-sub">Payroll is the largest line every month, but has fallen from 48% of revenue in January to 31–40% since April as sales scaled. Note: Operations from June onward includes the 5% management fee (about $12K a month) that the April and May statements do not carry, so Operations is not perfectly comparable across months.</p>
       <div class="legend" id="expLegend"></div>
       <div class="chart-wrap" id="chartExpenses"></div>
       <div class="table-scroll" style="margin-top:14px;">
@@ -265,56 +265,56 @@
   </section>
 
   <footer>
-    <p>Source: HBG 2 LLC monthly Profit &amp; Loss and Balance Sheet statements, January–August 2026 (unaudited, for management purposes only). January–May are each month's own statement; June, July and August are the corrected columns of the June–August 2026 package. Balance-sheet items for January–July are as originally reported; August 31 is from the August package. Figures are on an accrual basis as reported.</p>
-    <p>Prepared for Healdsburg Bar &amp; Grill ownership review · Data current as of the August 2026 close.</p>
+    <p>Source: HBG 2 LLC monthly Profit &amp; Loss and Balance Sheet statements, January–September 2026 (unaudited, for management purposes only). January–May are each month's own statement; June through September are from the corrected quarterly packages (the latest also restates August). Balance-sheet items through August are as originally reported; September 30 is from the September package. Figures are on an accrual basis as reported.</p>
+    <p>Prepared for Healdsburg Bar &amp; Grill ownership review · Data current as of the September 2026 close.</p>
   </footer>
 
 </div>
 
-<div id="page-augbudget" class="page">
+<div id="page-sepbudget" class="page">
 
   <section style="margin-top:32px;">
-    <h2>August 2026 vs. budget</h2>
-    <p class="section-sub">Corrected August 2026 actual performance against the August portion of the 2026 budget, by category. Variance is actual less budget; for revenue and profit lines a positive variance is favorable, while for cost lines a positive variance means spending ran ahead of budget.</p>
+    <h2>September 2026 vs. budget</h2>
+    <p class="section-sub">September 2026 actual performance against the September portion of the 2026 budget, by category. Variance is actual less budget; for revenue and profit lines a positive variance is favorable, while for cost lines a positive variance means spending ran ahead of budget.</p>
     <div class="card" style="padding-bottom:6px;">
       <div class="table-scroll">
-        <table class="yoy" id="augBudgetTable"></table>
+        <table class="yoy" id="sepBudgetTable"></table>
       </div>
     </div>
-    <div class="narrative" id="augBudgetNarrative" style="margin-top:20px;"></div>
+    <div class="narrative" id="sepBudgetNarrative" style="margin-top:20px;"></div>
   </section>
 
   <footer>
-    <p>Source: HBG 2 LLC combined June–August 2026 Profit &amp; Loss statement (actual, August column, corrected package) and the HBG 2026 Budget workbook (budget, August column) (unaudited, for management purposes only). Budget "Net Income" is derived as Net Operating Income plus Net Other Income; the budget workbook's separate summary section regroups some expense categories and is not used. The "Other" line is total expenses less the six budget categories (advertising &amp; marketing and property taxes in August); the budget has no category for it.</p>
+    <p>Source: HBG 2 LLC third-quarter 2026 Profit &amp; Loss statement (actual, September column) and the HBG 2026 Budget workbook (budget, September column) (unaudited, for management purposes only). Budget "Net Income" is derived as Net Ordinary Income plus Net Other Income; the budget workbook's separate summary section regroups some expense categories and is not used. The "Other" line is total expenses less the six budget categories (advertising &amp; marketing and meals in September); the budget has no category for it. The budget carries loan interest (about $2,081 a month) below operating income, while the statements book actual loan interest within Financial.</p>
   </footer>
 
 </div>
 
-<div id="page-augvsprior" class="page">
+<div id="page-sepvsprior" class="page">
 
   <section style="margin-top:32px;">
-    <h2>August 2026 vs. August 2025</h2>
-    <p class="section-sub">Actual-vs-prior-year comparison for August, using the August column of each year's June–August package. Variance and growth are 2026 less 2025; for cost lines, an increase is shown as unfavorable.</p>
+    <h2>September 2026 vs. September 2025</h2>
+    <p class="section-sub">Actual-vs-prior-year comparison for September, using the September column of each year's third-quarter package. Variance and growth are 2026 less 2025; for cost lines, an increase is shown as unfavorable.</p>
     <div class="card" style="padding-bottom:6px;">
       <div class="table-scroll">
-        <table class="yoy" id="augYoyTable"></table>
+        <table class="yoy" id="sepYoyTable"></table>
       </div>
     </div>
-    <div class="narrative" id="augYoyNarrative" style="margin-top:20px;"></div>
+    <div class="narrative" id="sepYoyNarrative" style="margin-top:20px;"></div>
   </section>
 
   <section>
-    <h2>Full P&amp;L detail — August 2026 vs. August 2025</h2>
+    <h2>Full P&amp;L detail — September 2026 vs. September 2025</h2>
     <p class="section-sub">Every line item, matched by account. A dash means the account was not itemized in that year's statement (or the comparison does not apply); "n/m" means the percentage is not meaningful (for example, the prior-year amount was zero or opposite in sign).</p>
     <div class="card" style="padding-bottom:6px;">
       <div class="table-scroll">
-        <table class="pnl" id="augYoyDetailTable"></table>
+        <table class="pnl" id="sepYoyDetailTable"></table>
       </div>
     </div>
   </section>
 
   <footer>
-    <p>Source: HBG 2 LLC June–August 2026 Profit &amp; Loss (corrected package) and June–August 2025 Profit &amp; Loss (unaudited, for management purposes only). Comparability notes: August 2025 includes a $4,263 credit booked to "Uncategorized Expense (Income)" and a management fee flagged "estimated expense, no invoice received"; August 2026 has loan interest (no loan in 2025) and a property-tax line that has no 2025 counterpart. "Other" is total expenses less the six main categories. Accounts that exist in only one year are shown with a dash on the other side; accounts with no activity in either year are omitted.</p>
+    <p>Source: HBG 2 LLC third-quarter 2026 Profit &amp; Loss and third-quarter 2025 Profit &amp; Loss (unaudited, for management purposes only). Comparability notes: September 2025 was an unusually weak month (revenue fell about 18% from August 2025); September 2026 has loan interest (no loan in 2025), equipment rental, small-equipment and meals lines with no 2025 counterpart. "Other" is total expenses less the six main categories. Accounts that exist in only one year are shown with a dash on the other side; accounts with no activity in either year are omitted.</p>
   </footer>
 
 </div>
@@ -323,7 +323,7 @@
 
   <section style="margin-top:32px;">
     <h2>Year-to-date vs. 2026 budget</h2>
-    <p class="section-sub">Total January–August 2026 actual performance (sum of the monthly statements used in this dashboard) against the January–August portion of the 2026 budget, by category. Variance is actual less budget; for revenue and profit lines a positive variance is favorable, while for cost lines a positive variance means spending ran ahead of budget.</p>
+    <p class="section-sub">Total January–September 2026 actual performance (sum of the monthly statements used in this dashboard) against the January–September portion of the 2026 budget, by category. Variance is actual less budget; for revenue and profit lines a positive variance is favorable, while for cost lines a positive variance means spending ran ahead of budget.</p>
     <div class="card" style="padding-bottom:6px;">
       <div class="table-scroll">
         <table class="yoy" id="budgetTable"></table>
@@ -333,8 +333,8 @@
   </section>
 
   <section>
-    <h2>Tie-out to the August 31 balance sheet</h2>
-    <p class="section-sub">The balance sheet reports lower year-to-date net income than the monthly statements add up to. This bridge shows the known pieces; the rest needs a restated January–August P&amp;L from the bookkeeper.</p>
+    <h2>Tie-out to the September 30 balance sheet</h2>
+    <p class="section-sub">The balance sheet reports lower year-to-date net income than the monthly statements add up to. This bridge shows the known pieces; the rest needs a restated January–September P&amp;L from the bookkeeper.</p>
     <div class="card" style="padding-bottom:6px;">
       <div class="table-scroll">
         <table class="yoy" id="tieoutTable"></table>
@@ -343,7 +343,7 @@
   </section>
 
   <footer>
-    <p>Source: HBG 2 LLC January–August 2026 monthly Profit &amp; Loss statements (actual; January–May as issued, June–August from the corrected June–August package), the August 31, 2026 balance sheet, and the HBG 2026 Budget workbook (budget), summed to a year-to-date total (unaudited, for management purposes only). Budget "Net Income" is Net Operating Income plus Net Other Income; the workbook's separate summary section is not used. The "Other" line is total expenses less the six budget categories and has no budget. The April/May management fee is an estimate at 5% of revenue, the rate booked in every other month; restated January–May figures are from the later monthly packages' comparative columns.</p>
+    <p>Source: HBG 2 LLC January–September 2026 monthly Profit &amp; Loss statements (actual; January–May as issued, June–September from the corrected quarterly packages), the September 30, 2026 balance sheet, and the HBG 2026 Budget workbook (budget), summed to a year-to-date total (unaudited, for management purposes only). Budget "Net Income" is Net Ordinary Income plus Net Other Income; the workbook's separate summary section is not used. The "Other" line is total expenses less the six budget categories and has no budget. The April/May management fee is an estimate at 5% of revenue, the rate booked in every other month; restated January–May figures are from the later monthly packages' comparative columns.</p>
   </footer>
 
 </div>
@@ -370,13 +370,13 @@
   <section>
     <div class="two-col two-eq">
       <div>
-        <h2>Is August's margin repeatable?</h2>
-        <p class="section-sub">Reported August profit versus an illustrative run-rate, adjusting for one-time or timing items.</p>
+        <h2>Is September's margin repeatable?</h2>
+        <p class="section-sub">Reported September profit versus an illustrative run-rate, adjusting for one-time or timing items.</p>
         <div class="card" style="padding-bottom:6px;"><div class="table-scroll"><table class="yoy" id="oppAdjTable"></table></div></div>
       </div>
       <div>
         <h2>Biggest year-over-year cost increases</h2>
-        <p class="section-sub">Expense lines with the largest dollar increase, August 2026 vs. August 2025.</p>
+        <p class="section-sub">Expense lines with the largest dollar increase, September 2026 vs. September 2025.</p>
         <div class="card" style="padding-bottom:6px;"><div class="table-scroll"><table class="yoy" id="oppMovers"></table></div></div>
       </div>
     </div>
@@ -388,7 +388,7 @@
   </section>
 
   <footer>
-    <p>Sizing notes: annual revenue base is the January–August monthly average × 12. Flow-through compares June–August 2026 with June–August 2025 (net income change ÷ revenue change). Cost-to-sales ratios by beverage category use purchases ÷ sales for June–August 2026 and are not true COGS. SBA-loan rate is from the distribution-policy file in this project (prime + 2 points); verify against the loan documents. Not tax, legal or financial advice.</p>
+    <p>Sizing notes: annual revenue base is the January–September monthly average × 12. Flow-through compares the third quarter of 2026 with the third quarter of 2025 (net income change ÷ revenue change). Cost-to-sales ratios by beverage category use purchases ÷ sales for the third quarter of 2026 and are not true COGS. SBA-loan rate is from the distribution-policy file in this project (prime + 2 points); verify against the loan documents. Not tax, legal or financial advice.</p>
   </footer>
 
 </div>
@@ -396,8 +396,8 @@
 <div id="page-detail" class="page">
 
   <section style="margin-top:32px;">
-    <h2>July &amp; August in detail</h2>
-    <p class="section-sub">A full line-item P&amp;L for the two most recent months, shown on their own — tying to the January–August trend on the YTD Overview page. Each line shows both the dollar amount and its share of that month's revenue.</p>
+    <h2>August &amp; September in detail</h2>
+    <p class="section-sub">A full line-item P&amp;L for the two most recent months, shown on their own — tying to the January–September trend on the YTD Overview page. Each line shows both the dollar amount and its share of that month's revenue.</p>
     <div class="card" style="padding-bottom:6px;">
       <div class="table-scroll">
         <table class="pnl" id="pnlDetailTable"></table>
@@ -406,8 +406,8 @@
   </section>
 
   <footer>
-    <p>Source: HBG 2 LLC corrected June–August 2026 Profit &amp; Loss statement, using that statement's own July and August columns so every line item aligns exactly (unaudited, for management purposes only).</p>
-    <p>Note: July and August on this page tie exactly to the monthly figures on the YTD Overview page (July net income $24,512; August $39,602) because both now use this package. The management fee (5% of revenue) is itemized under Legal & Professional Fees within Operations.</p>
+    <p>Source: HBG 2 LLC third-quarter 2026 Profit &amp; Loss statement, using that statement's own August and September columns so every line item aligns exactly (unaudited, for management purposes only).</p>
+    <p>Note: August and September on this page tie exactly to the monthly figures on the YTD Overview page (August net income $38,703; September $20,822) because both use this package. August differs slightly from the previously published $39,602 because this package restated it. The management fee (5% of revenue) is itemized under Legal &amp; Professional Fees within Operations.</p>
   </footer>
 
 </div>
